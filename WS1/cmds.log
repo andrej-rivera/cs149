@@ -1,0 +1,25 @@
+    1  sudo whoami
+    2  sudo apt update && sudo apt upgrade -y
+    3  sudo snap refresh
+    4  ls
+    5  ./autorun.sh
+    6  sudo apt install gcc
+    7  sudo apt install make
+    8  sudo snap install clion --classic
+    9  cat > testfile.txt
+   10  git
+   11  git version
+   12  sudo apt install git
+   13  git
+   14  pwd
+   15  git init
+   16  git remote add origin https://github.com/andrej-rivera/cs149.git
+   17  git config --global user.email "andre_rivera1337@hotmail.com"
+   18  git config --global user.name "andrej-rivera"
+   19  mkdir WS1
+   20  cd WS1
+   21  git add.
+   22  git add .
+   23  wget -O out.pdf https://tinyurl.com/yy94jltt
+   24  ls -latr
+   25  history > cmds.log
