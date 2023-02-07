@@ -1,3 +1,5 @@
+//Zybooks Lab 1.17 - Right-facing arrow
+//By Andre Rivera & Tanisha Damle
 #include <stdio.h>
 
 int main(void) {

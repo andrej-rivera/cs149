@@ -1,3 +1,5 @@
+//Zybooks Lab 1.16 - No Parking Sign
+//By Andre Rivera & Tanisha Damle
 #include <stdio.h>
 
 int main(void) {

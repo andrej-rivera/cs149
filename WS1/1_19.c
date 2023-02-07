@@ -1,3 +1,5 @@
+//Zybooks Lab 1.19 - Basic output with variables
+//By Andre Rivera & Tanisha Damle
 #include <stdio.h>
 
 int main(void) {

@@ -1,3 +1,5 @@
+//Zybooks Lab 1.20 - ASCII Art
+//By Andre Rivera & Tanisha Damle
 #include <stdio.h>
 
 int main(void) {
