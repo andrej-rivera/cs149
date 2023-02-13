@@ -1,0 +1,118 @@
+    1  sudo whoami
+    2  sudo apt update && sudo apt upgrade -y
+    3  sudo snap refresh
+    4  ls
+    5  ./autorun.sh
+    6  sudo apt install gcc
+    7  sudo apt install make
+    8  sudo snap install clion --classic
+    9  cat > testfile.txt
+   10  git
+   11  git version
+   12  sudo apt install git
+   13  git
+   14  pwd
+   15  git init
+   16  git remote add origin https://github.com/andrej-rivera/cs149.git
+   17  git config --global user.password [A
+   18  git config --global user.name "andrej-rivera"
+   19  mkdir WS1
+   20  cd WS1
+   21  git add.
+   22  git add .
+   23  wget -O out.pdf https://tinyurl.com/yy94jltt
+   24  ls -latr
+   25  history > cmds.log
+   26  git add cmds.log *.c
+   27  git commit -m "First commit" -a
+   28  git branch
+   29  git push -u origin master
+   30  git branch -M master
+   31  git push -u origin master
+   32  git status
+   33  git add .
+   34  git status
+   35  git commit -m "First commit" -a
+   36  git push -u origin master
+   37  gh auth login
+   38  sudo apt install gh
+   39  gh auth login
+   40  git push -u origin master
+   41  gh auth login
+   42  git push -u origin master
+   43  gcc 1_15.c -o prog
+   44  chmod 777 prog*
+   45  ./prog
+   46  gcc 1_16.c -o prog
+   47  chmod 777 prog*
+   48  ./prog
+   49  gcc 1_17.c -o prog
+   50  chmod 777 prog*
+   51  ./prog
+   52  gcc 1_18.c -o prog
+   53  chmod 777 prog*
+   54  ./prog
+   55  gcc 1_19.c -o prog
+   56  chmod 777 prog*
+   57  ./prog
+   58  gcc 1_20.c -o prog
+   59  chmod 777 prog*
+   60  ./prog
+   61  gcc 1_20.c -o prog
+   62  chmod 777 prog*
+   63  ./prog
+   64  git add *.c
+   65  git status
+   66  git commit -m "Push WS1 .c files" -a
+   67  git push
+   68  sudo apt update
+   69  sudo apt upgrade
+   70  gcc -version
+   71  gcc --version
+   72  git status
+   73  git push -u origin master
+   74  gcc
+   75  gcc -v
+   76  gcc -o 1_15.c
+   77  gcc -o 1_15.c output
+   78  gcc -o 1_15.c output.txt
+   79  gcc -o   1_15.c
+   80  gcc -i 1_15.c
+   81  gcc -o output 1_1.c
+   82  gcc -o 1_16.c
+   83  gcc -o 1_16.c output
+   84  gcc -g -o prog 1_15.c
+   85  gdb ./prog
+   86  gcc -g -o prog 1_16.c
+   87  gdb ./prog
+   88  gcc -g -o prog 1_17.c
+   89  gdb ./prog
+   90  git add .c
+   91  git status
+   92  git push
+   93  git pull
+   94  git revert
+   95  git push
+   96  git add
+   97  git status
+   98  git commit -m "added comments to ws1 code"
+   99  git add *.c
+  100  git commit -m "added comments to ws1 code"
+  101  git push
+  102  cd .
+  103  cd /
+  104  cd Desktop
+  105  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andre.rivera
+  106  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andrerivera
+  107  ls
+  108  pwd
+  109  cd Desktop
+  110  cd "CS 149"
+  111  mkdir WS2
+  112  cd WS2
+  113  ls -latr
+  114  echo $?
+  115  man ps
+  116  ps aux
+  117  top
+  118  history > worksheet2.log
