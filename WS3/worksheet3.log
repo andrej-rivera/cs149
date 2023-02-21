@@ -1,0 +1,200 @@
+    1  sudo whoami
+    2  sudo apt update && sudo apt upgrade -y
+    3  sudo snap refresh
+    4  ls
+    5  ./autorun.sh
+    6  sudo apt install gcc
+    7  sudo apt install make
+    8  sudo snap install clion --classic
+    9  cat > testfile.txt
+   10  git
+   11  git version
+   12  sudo apt install git
+   13  git
+   14  pwd
+   15  git init
+   16  git remote add origin https://github.com/andrej-rivera/cs149.git
+   17  git config --global user.password [A
+   18  git config --global user.name "andrej-rivera"
+   19  mkdir WS1
+   20  cd WS1
+   21  git add.
+   22  git add .
+   23  wget -O out.pdf https://tinyurl.com/yy94jltt
+   24  ls -latr
+   25  history > cmds.log
+   26  git add cmds.log *.c
+   27  git commit -m "First commit" -a
+   28  git branch
+   29  git push -u origin master
+   30  git branch -M master
+   31  git push -u origin master
+   32  git status
+   33  git add .
+   34  git status
+   35  git commit -m "First commit" -a
+   36  git push -u origin master
+   37  gh auth login
+   38  sudo apt install gh
+   39  gh auth login
+   40  git push -u origin master
+   41  gh auth login
+   42  git push -u origin master
+   43  gcc 1_15.c -o prog
+   44  chmod 777 prog*
+   45  ./prog
+   46  gcc 1_16.c -o prog
+   47  chmod 777 prog*
+   48  ./prog
+   49  gcc 1_17.c -o prog
+   50  chmod 777 prog*
+   51  ./prog
+   52  gcc 1_18.c -o prog
+   53  chmod 777 prog*
+   54  ./prog
+   55  gcc 1_19.c -o prog
+   56  chmod 777 prog*
+   57  ./prog
+   58  gcc 1_20.c -o prog
+   59  chmod 777 prog*
+   60  ./prog
+   61  gcc 1_20.c -o prog
+   62  chmod 777 prog*
+   63  ./prog
+   64  git add *.c
+   65  git status
+   66  git commit -m "Push WS1 .c files" -a
+   67  git push
+   68  sudo apt update
+   69  sudo apt upgrade
+   70  gcc -version
+   71  gcc --version
+   72  git status
+   73  git push -u origin master
+   74  gcc
+   75  gcc -v
+   76  gcc -o 1_15.c
+   77  gcc -o 1_15.c output
+   78  gcc -o 1_15.c output.txt
+   79  gcc -o   1_15.c
+   80  gcc -i 1_15.c
+   81  gcc -o output 1_1.c
+   82  gcc -o 1_16.c
+   83  gcc -o 1_16.c output
+   84  gcc -g -o prog 1_15.c
+   85  gdb ./prog
+   86  gcc -g -o prog 1_16.c
+   87  gdb ./prog
+   88  gcc -g -o prog 1_17.c
+   89  gdb ./prog
+   90  git add .c
+   91  git status
+   92  git push
+   93  git pull
+   94  git revert
+   95  git push
+   96  git add
+   97  git status
+   98  git commit -m "added comments to ws1 code"
+   99  git add *.c
+  100  git commit -m "added comments to ws1 code"
+  101  git push
+  102  cd .
+  103  cd /
+  104  cd Desktop
+  105  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andre.rivera
+  106  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andrerivera
+  107  ls
+  108  pwd
+  109  cd Desktop
+  110  cd "CS 149"
+  111  mkdir WS2
+  112  cd WS2
+  113  ls -latr
+  114  echo $?
+  115  man ps
+  116  ps aux
+  117  top
+  118  history > worksheet2.log
+  119  tail worksheet2.log
+  120  cat worksheet2.log
+  121  sudo adduser andre vboxsf
+  122  git add *.c
+  123  git add worksheet2.log
+  124  git commit -m "Worksheet 2 commit - .C & .log"
+  125  git status
+  126  git push
+  127  git pull
+  128  cd ..
+  129  cd "CS 149"
+  130  git pull
+  131  git status
+  132  git config pull.rebase false
+  133  git pull
+  134  cd WS2
+  135  git add *.c worksheet2.log
+  136  git status
+  137  git push
+  138  git status
+  139  cd ..
+  140  git clone master https://github.com/TanishaD111/cs149.git cs149_tanisha
+  141  git clone -b  master https://github.com/TanishaD111/cs149.git cs149_tanisha
+  142  cd cs149_tanisha
+  143  cd WS2
+  144  gcc -g -o 2_25.c
+  145  gcc -g -o test  2_25.c
+  146  gdb ./test
+  147  gdb --args test 2 4
+  148  gcc -g -o test  2_26.c
+  149  gcc -g -o test  2_29.c
+  150  gcc --v
+  151  gcc --version
+  152  gcc -Wall -o test 2_29.c
+  153  gcc -Wall -Werror -g -o test  2_29.c
+  154  gcc -o test  2_29.c -Wall
+  155  gcc -o test 2_29.c
+  156  gcc -o test  2_29.c -Wall -lm
+  157  gdb --args test 2 4 5
+  158  gcc -g -o test  2_29.c
+  159  git pull
+  160  gcc -g -o test  2_25.c -lm -Wall -Werror
+  161  gdb --args test
+  162  gcc -g -o test  2_29.c -lm -Wall -Werror
+  163  gdb --args test
+  164  gcc -g -o test  2_32.c -lm -Wall -Werror
+  165  gdb --args test
+  166  gcc -g -o test  2_34.c -lm -Wall -Werror
+  167  gdb --args test
+  168  gcc -g -o test  3_22.c -lm -Wall -Werror
+  169  gdb --args test
+  170  git clone -b master https://github.com/TanishaD111/cs149 cs149_tanishadamle
+  171  gcc -g -o test  3_22.c -lm -Wall -Werror
+  172  gcc -g -o test  2_29.c -lm -Wall -Werror
+  173  gcc -g -o test  2_29.c  -Wall -Werror
+  174  gcc -g -o test  2_29.c -lm -Wall -Werror
+  175  gcc -o test  2_29.c -lm -Wall -Werror
+  176  gcc -o test  2_29.c -Wall -lm
+  177  gcc -o test  2_32.c -lm
+  178  gdb --args test
+  179  gcc -o test  2_34.c -lm
+  180  gdb --args test
+  181  gcc -o test  3_22.c -lm
+  182  gcc -o test  3_22.c -lm -wall
+  183  gcc -o test  3_22.c -lm -Wall
+  184  gdb --args test
+  185  gcc -o test  countnames.c -lm -Wall
+  186  ./countnames names.txt
+  187  ./test names.txt
+  188  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andrerivera
+  189  wget https://github.com/torvalds/linux/archive/master.zip
+  190  unzip master.zip
+  191  cd linux-master
+  192  pwd
+  193  alias l='ls -latr'
+  194  l
+  195  find .-name mem.c
+  196  find . -name mem.c
+  197  find . -name mem.c | xargs grep 86
+  198  find . -name mem.c | xargs head
+  199  cd ..
+  200  history > worksheet3.log
