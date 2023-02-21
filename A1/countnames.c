@@ -1,4 +1,5 @@
 /**
+ * Assignment 1 - count of names
  * Description: This program takes in an file path argument from the terminal and reads it. 
  * Given a list of names, it will count all the occurences each name appears.
  * Author names: Andre Rivera, Tanisha Damle 
