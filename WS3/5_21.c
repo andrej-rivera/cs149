@@ -19,7 +19,7 @@ int main(void) {
    
    for(int i = 0; i < numInt; ++i)
    {
-      scanf("%s ", &wordList[i]);
+      scanf("%s ", wordList[i]);
    }
    
    char searchCharacter;
