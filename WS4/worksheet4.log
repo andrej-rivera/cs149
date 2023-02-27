@@ -1,0 +1,21 @@
+    1  git init
+    2  cd ~
+    3  cd Desktop/
+    4  sudo apt install git
+    5  git clone -b master https://github.com/TanishaD111/cs149 cs149
+    6  cd cs149
+    7  git init
+    8  ls -latr ; mkdir WS4 ; cd WS4
+    9  gedit 6_20.c
+   10  cd ~
+   11  cd Desktop/
+   12  cd cs149
+   13  cd WS4
+   14  ls
+   15  gedit 6_30.c
+   16  cd ~
+   17  cd Desktop/
+   18  cd cs149
+   19  cs WS4
+   20  cd WS4
+   21  history > worksheet4.log
