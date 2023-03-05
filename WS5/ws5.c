@@ -7,22 +7,22 @@ int main(void) {
    
    pid_t pid;
    
-   pid = fork();
-   pid = fork();
-   
-   if(pid < 0){ // error occurred
+   for(int i = 0; i < 2; i++){
+      pid = fork();
+      if(pid < 0){ // error occurred
       fprintf(stderr, "Fork Failed\n");
-      return 1;
+         exit(1);
+      }
+	   
+      else if(pid == 0){ // child process
+         printf("child: hello world from PID %d!\n", (int) getpid());
+      } 
+	   
+      else if(pid > 0){ // parent process
+         wait(NULL);
+         printf("parent: hello world from PID %d!\n", (int) getpid());
+      }
    }
    
-   else if(pid == 0){ // child process
-      printf("hello world from PID %d!\n", (int) getpid());
-      return 0;
-   } 
-   
-   else if(pid > 0){ // parent process
-      wait(NULL);
-      printf("hello world from PID %d!\n", (int) getpid());
-      return 0;
-   }
+   return 0;
 }
