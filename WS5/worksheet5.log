@@ -1,0 +1,135 @@
+    1  git init
+    2  cd ~
+    3  cd Desktop/
+    4  sudo apt install git
+    5  git clone -b master https://github.com/TanishaD111/cs149 cs149
+    6  cd cs149
+    7  git init
+    8  ls -latr ; mkdir WS4 ; cd WS4
+    9  gedit 6_20.c
+   10  cd ~
+   11  cd Desktop/
+   12  cd cs149
+   13  cd WS4
+   14  ls
+   15  gedit 6_30.c
+   16  cd ~
+   17  cd Desktop/
+   18  cd cs149
+   19  cs WS4
+   20  cd WS4
+   21  history > worksheet4.log
+   22  git commit -m "first commit" -a
+   23  git remote add origin https://github.com/TanishaD111/cs149.git
+   24  git config --global user.email "tanishadamle111@gmail.com"
+   25  git config --global user.name TanishaD111
+   26  git commit -m "first commit" -a
+   27  git branch
+   28  git push -u origin master
+   29  git add .
+   30  git commit -m "first commit" -a
+   31  git branch
+   32  git push -u origin master
+   33  cd ~
+   34  cd Desktop/
+   35  git clone -b master https://github.com/andrej-rivera/cs149.git cs149_shared
+   36  cd cs149_shared
+   37  git init
+   38  git remote add origin https://github.com/andrej-rivera/cs149.git
+   39  mkdir WS4
+   40  cd WS4
+   41  git add .
+   42  git add cmds.log *.c
+   43  git add worksheet4.log *.c
+   44  git commit -m "first commit" -a
+   45  git branch
+   46  git push -u origin master
+   47  git clone -b master https://github.com/andrej-rivera/cs149.git cs149_tanishadamle
+   48  cd ~
+   49  cd Desktop/
+   50  ccd ~
+   51  cd ~
+   52  vi 6_20.c
+   53  cd ~
+   54  cd Desktop/
+   55  cd cs149_shared
+   56  ls -latr ; mkdir WS5 ; cd WS5
+   57  gedit 5_26.c
+   58  gedit 6_28.c
+   59  gcc -o 5_26 5_26.c
+   60  sudo apt install gcc
+   61  gcc -o 5_26 5_26.c
+   62  sudo apt install gcc
+   63  apt-get update
+   64  sudo apt install gcc
+   65  --fix-missing
+   66  cd ~
+   67  sudo apt install gcc
+   68  apt-get update
+   69  sudo apt update
+   70  sudo apt install gcc
+   71  gcc -o 5_26 5_26.c
+   72  cd cs149
+   73  cd Desktop/
+   74  cd cs149
+   75  cd WS5
+   76  cd ~
+   77  cd Desktop/
+   78  cd cs149_shared
+   79  cd WS5
+   80  gcc -o 5_26 5_26.c
+   81  ./5_26
+   82  cd Desktop/
+   83  cd cs149_shared
+   84  cd WS5
+   85  gcc -o 6_28 6_28.c
+   86  git init
+   87  cd ~
+   88  cd Desktop/
+   89  cd cs149_shared
+   90  git init
+   91  git add .
+   92  cd WS5
+   93  git add .
+   94  git add *.c
+   95  git commit -m "first commit" -a
+   96  git commit -m "first" -a
+   97  git branch
+   98  git push -u origin master
+   99  cd ~
+  100  cd Desktop/
+  101  cd cs149_shared
+  102  cd WS5
+  103  git add .
+  104  histpry > worksheet5.log
+  105  history > worksheet5.log
+  106  git add worksheet5.log *.c
+  107  git commit "first" -a
+  108  git commit -m "first" -a
+  109  git branch
+  110  git push -u origin master
+  111  cd ~
+  112  cd Desktop/
+  113  cd cs149_shared
+  114  git init
+  115  git remote add origin https://github.com/andrej-rivera/cs149.git
+  116  git config --global user.email "tanishadamle@gmail.com"
+  117  git config --global user.name "TanishaD111"
+  118  cd WS5
+  119  git add .
+  120  git add worksheet5.log *.c
+  121  git commit -m "first commit" -a
+  122  git branch
+  123  git push -u origin master
+  124  cd ~
+  125  cd Desktop/
+  126  git clone -b master https://github.com/andrej-rivera/cs149 cs149_shared2
+  127  cd cs149_shared2
+  128  git init
+  129  git remote add origin https://github.com/andrej-rivera/cs149.git
+  130  git config --global user.email "tanishadamle111@gmail.com"
+  131  git config --global user.name "TanishaD111"
+  132  mkdir WS5
+  133  cd WS5
+  134  git add .
+  135  history > worksheet5.log
