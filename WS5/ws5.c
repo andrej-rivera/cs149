@@ -16,11 +16,13 @@ int main(void) {
 	   
       else if(pid == 0){ // child process
          printf("child: hello world from PID %d!\n", (int) getpid());
+         return 0;
       } 
 	   
       else if(pid > 0){ // parent process
          wait(NULL);
          printf("parent: hello world from PID %d!\n", (int) getpid());
+         //return 0;
       }
    }
    
