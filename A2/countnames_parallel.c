@@ -1,4 +1,4 @@
-/**
+  /**
  * Assignment 2 - count of names parallel
  * Description: This program takes in one or more input files on the command line and reads it. 
  * Given a list of names, it will count all the occurences each name appears in a parallel fashion
@@ -17,6 +17,13 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <stdlib.h>
+
+typedef struct my_data { // data structure that will store a name and the # of times it appears
+    char name[30];
+    int count;
+} my_data;
+my_data namecounts[100] = {{'\0', 0}}; // array of 100 names & counts
 
 //This function takes in a string as an input argument
 int main(int argc, char *argv[]) {
@@ -56,48 +63,44 @@ int main(int argc, char *argv[]) {
 	        return 1;
 	    }
     
-	    //Initialize variables
-            char nameArray[100][30]; // create array of 100 names that can be up to 30 characters long
-            int i = 0; //line counter
-            int currentSize = 0; //reflects the current size of the array
-            char string[30]; //variable to hold strings read from fgets     
+	    int i = 0; //line counter
+    	    int currentSize = 0; //reflects the current size of the array
+    	    char string[30]; //variable to hold strings read from fgets
 
-	    //This loop will read lines from the text file using fgets and will stop when the file has ended
-	    while(fgets(string, 30, textFile) != NULL) { // loop until end of file
-	        ++i;
-	        if(isspace(string[0])) { //if whitespace, print to stderror
-		    fprintf(stderr,"Warning - Line %d is empty\n", i);
-		    continue;
-                }
+    	    //This loop will read lines from the text file using fgets and will stop when the file has ended
+    	    while(fgets(string, 30, textFile) != NULL) { // loop until end of file
+                ++i;
+        	if(isspace(string[0])) { //if whitespace, print to stderror
+                    fprintf(stderr,"Warning - Line %d is empty\n", i);
+                    continue;
+                }   
+                string[strcspn(string, "\n")] = 0; //formatting, removes trailing \n from string
 
-	        //else, check if name is unique & add to array
+                //else, check if name is unique & add to array
                 int check = 1; //checker for duplicate
 
-	        //This loop traverses the nameArray and checks for duplicates
-	        for(int i = 0; i < currentSize; ++i) {
-		    if(strcmp(string, nameArray[i]) == 0) { //if string matches w/ a name in array
-		        check = 0; //set check to 0
-		        break; //break out of the loop
-	            }
-	        }
-	        if(check == 1) { //if check is still 1 after looping through array, add it to the array
-		    strcpy(nameArray[currentSize],string);
-		    currentSize++;
-	        }
-	    }
-	 
-	    //double-loop will check first traverse nameArray, and then reads the text file again to count how many times a name appears
-	    for(int i = 0; i < currentSize; ++i) {
-	        rewind(textFile); //reset fgets
-	        int counter = 0;
-	        while(fgets(string, 30, textFile) != NULL) {
-		    if(strcmp(string, nameArray[i]) == 0) { //compares read line to name in array
-		        counter++;
-		    }
+                //This loop traverses the namecounts struct and checks for duplicates
+                for(int i = 0; i < currentSize; ++i)
+                {
+                    if(strcmp(string, namecounts[i].name) == 0) { //if string matches w/ a name in array
+                        check = 0; //set check to 0
+                        namecounts[i].count++; // increment by 1
+                    }
+
+                    if(!check) {
+                        break;
+                    }
+                }   
+                if(check == 1) { //if check is still 1 after looping through array, add it to the array
+                    strcpy(namecounts[currentSize].name, string); // add to namecounts data structure
+                    namecounts[currentSize].count++; // increment by 1
+                    currentSize++;
                 }
-	        nameArray[i][strcspn(nameArray[i], "\n")] = 0; //formatting, removes trailing \n from nameArray[i]
-	        fprintf(stdout, "%s: %d\n", nameArray[i], counter);
-	    }
+            }
+
+            for(int i = 0; i < currentSize; ++i) {
+                printf("%s: %d\n", namecounts[i].name, namecounts[i].count);
+            }
 	    
 	    fclose(textFile);
 	    

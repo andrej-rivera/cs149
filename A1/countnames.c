@@ -15,6 +15,12 @@
 #include <string.h>
 #include <ctype.h>
 
+typedef struct my_data { // data structure that will store a name and the # of times it appears
+    char name[30];
+    int count;
+} my_data;
+my_data namecounts[100] = {{'\0', 0}}; // array of 100 names & counts
+
 //This function takes in a string as an input argument
 int main(int argc, char *argv[]) {
 
@@ -32,12 +38,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    //Initialize variables
-    struct my_data { // data structure that will store a name and the # of times it appears
-        char name[30];
-        int count= 0;
-    };
-    struct my_data namecounts[100]; // array of 100 names & counts
+    
 
     int i = 0; //line counter
     int currentSize = 0; //reflects the current size of the array
