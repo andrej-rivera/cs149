@@ -99,19 +99,20 @@ int main(int argc, char *argv[]) {
 	        fprintf(stdout, "%s: %d\n", nameArray[i], counter);
 	    }
 	    
+	    fclose(textFile);
+	    
 	    close(thePipe[1]); // close the writing the of thePipe
 	    
 	    exit(0);
 	}
-	
-	else if((wait(NULL)) > 0){ // parent process waits for the child to finish
-            wait(NULL);
-        
-        }
         
     }
-
-    fclose(textFile);
-
+    
+    while(wait(NULL) > 0) {
+        
+        
+        
+    }
+    
     return 0;
 }
