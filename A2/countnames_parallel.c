@@ -10,6 +10,7 @@
  * - https://stackoverflow.com/questions/2693776/removing-trailing-newline-character-from-fgets-input
  * - https://cplusplus.com/reference/cstring/
  * - https://cplusplus.com/reference/cstdio/fgets/
+ * - https://stackoverflow.com/questions/47356860/c-how-to-detect-eof-in-pipe-when-reading-only-single-char
 */
 #include <stdio.h>
 #include <string.h>
@@ -38,7 +39,6 @@ int main(int argc, char *argv[]) {
     struct my_data namecounts[100]; // array of 100 names & counts
 
     int i = 0; //line counter
-    int currentSize = 0; //reflects the current size of the array
     char string[30]; //variable to hold strings read from fgets
 
 
@@ -73,23 +73,61 @@ int main(int argc, char *argv[]) {
         }
         else if(pid == 0) // if child process
         {
+            close(fd1[0]); // close reading side from child-parent pipe (child writes)
+            close(fd[1]); // close writing side from parent-child pipe (child reads)
             break; // break out of loop to prevent forking
         }
 
     }
 
-    if(pid != 0) // if parent, add up structs and print
+    if(pid > 0) // if parent, add up structs and print
     {
+        close(fd[0]); // close reading side from parent-child pipe (parent writes)
+        close(fd1[1]); // close writing side from child-parent pipe (parent reads)
     	wait(NULL); // wait for one child to finish
     	
-    	char string[30];
-    	read(fd1[0], string, 30); // read a name from pipe
-    	printf("%s", string);
-    	strcpy(namecounts[0].name, string);
-    	currentSize++;
+    	char string[30]; // string to store names from pipe
+    	int size = 0;  // current size of namecounts
+    	int bytesRead = 30; // read will return != 30, if pipe reaches the end
+    	
+    	while((bytesRead = read(fd1[0], string, 30) == 30)) // loop until pipe is empty
+    	{
+    	    //printf("%s", string);
+ 
+            // add read string to struct
+    	    int check = 1; //checker for duplicate
+    	    
+            //This loop traverses the namecounts struct and checks for duplicates
+            for(int i = 0; i < size; ++i)
+            {
+                if(strcmp(string, namecounts[i].name) == 0) //if string matches w/ a name in array
+                {
+                    //printf("%s at %d\n", string, namecounts[i].count);
+                    check = 0; //set check to 0
+                    namecounts[i].count++; // increment by 1
+                }
+
+                if(!check)
+                   break;
+           }
+           if(check) //if check is still 1 after looping through array, add it to the array
+           {
+               strcpy(namecounts[size].name, string); // add to namecounts data structure
+               namecounts[size].count = 0; // first, initialize to 0 in case of junk
+               namecounts[size].count++; // increment by 1
+               size++;
+           }
+           i++;
+    	}
+    	//printf("size of array is %d\n", size);
+        for(int i = 0; i < size; ++i)
+        {
+            printf("%s: %d\n", namecounts[i].name, namecounts[i].count);
+        }
+
         return 0;
     }
-    
+   
     // If not parent, run through this process
     //Open file
     FILE *textFile;
@@ -117,12 +155,11 @@ int main(int argc, char *argv[]) {
 	
 	// Write name to parent
 	write(fd1[1], string, 30);
+	//printf("wrote %s\n", string);
     }
-    printf("Child %d is done! Arg was %s \n", getpid(), fileName);
+    //printf("Child %d is done! Arg was %s \n\n", getpid(), fileName);
     fclose(textFile);
     exit(0);
-
-    return 0;
 }
 
 
