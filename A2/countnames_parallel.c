@@ -46,6 +46,8 @@ int main(int argc, char *argv[]) {
         
         else if(pid == 0){ // child process
 	    
+	    close(thePipe[0]); // close the reading end of thePipe
+	    
 	    //Open file
 	    FILE *textFile;
 	    textFile = fopen(argv[1], "r");
@@ -96,7 +98,17 @@ int main(int argc, char *argv[]) {
 	        nameArray[i][strcspn(nameArray[i], "\n")] = 0; //formatting, removes trailing \n from nameArray[i]
 	        fprintf(stdout, "%s: %d\n", nameArray[i], counter);
 	    }
+	    
+	    close(thePipe[1]); // close the writing the of thePipe
+	    
+	    exit(0);
 	}
+	
+	else if((wait(NULL)) > 0){ // parent process waits for the child to finish
+            wait(NULL);
+        
+        }
+        
     }
 
     fclose(textFile);
