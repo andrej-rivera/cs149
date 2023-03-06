@@ -38,14 +38,7 @@ int main(int argc, char *argv[]) {
     struct my_data namecounts[100]; // array of 100 names & counts
 
     // Setup pipe
-    int fd[2]; // first pipe to send args to children
-    if (pipe(fd)==-1) 
-    { 
-        fprintf(stderr, "Parent-Child Pipe Failed"); 
-        return 1; 
-    } 
-    
-    int fd1[2]; // second pipe to get children to send struct back
+    int fd1[2]; // pipe to get children to send struct back
     if(pipe(fd1)==-1)
     {
     	fprintf(stderr, "Child-Parent Pipe Failed");
@@ -54,11 +47,10 @@ int main(int argc, char *argv[]) {
     
     // Setup children processes
     pid_t pid;
-  
+    int argIndex = 1; // index that marks what argument to pass to child
+    
     for(int i = 1; i < argc; ++i)
     {
-
-	write(fd[1], argv[i], 100);
         pid = fork(); // forks a child
 
         if(pid < 0) // if fork results in error
@@ -69,15 +61,13 @@ int main(int argc, char *argv[]) {
         else if(pid == 0) // if child process
         {
             close(fd1[0]); // close reading side from child-parent pipe (child writes)
-            close(fd[1]); // close writing side from parent-child pipe (child reads)
             break; // break out of loop to prevent forking
         }
-
+        argIndex++;
     }
 
     if(pid > 0) // if parent, add up structs and print
     {
-        close(fd[0]); // close reading side from parent-child pipe (parent writes)
         close(fd1[1]); // close writing side from child-parent pipe (parent reads)
     	wait(NULL); // wait for one child to finish
     	
@@ -123,11 +113,10 @@ int main(int argc, char *argv[]) {
     }
    
     // If not parent, run through this process
+    
     //Open file
     FILE *textFile;
-    char fileName[100];
-    read(fd[0], fileName, 100);
-    textFile = fopen(fileName, "r");
+    textFile = fopen(argv[argIndex], "r");
     if(textFile == NULL) //edge case for when fopen fails to open a file
     {
 
@@ -151,11 +140,9 @@ int main(int argc, char *argv[]) {
             continue;
         }
         string[strcspn(string, "\n")] = 0; //formatting, removes trailing \n from string
-	
-	
-	int check = 1; //checker for duplicate
-    	    
+        
         //This loop traverses the namecounts struct and checks for duplicates
+        int check = 1; //checker for duplicate
         for(int i = 0; i < size; ++i)
         {
             if(strcmp(string, namecounts[i].name) == 0) //if string matches w/ a name in array
@@ -168,6 +155,7 @@ int main(int argc, char *argv[]) {
             if(!check)
                break;
        }
+       
        if(check) //if check is still 1 after looping through array, add it to the array
        {
            strcpy(namecounts[size].name, string); // add to namecounts data structure
@@ -175,12 +163,12 @@ int main(int argc, char *argv[]) {
            namecounts[size].count++; // increment by 1
            size++;
        }
-       
-	// Write name to parent
-	//write(fd1[1], string, 30);
-	//printf("wrote %s\n", string);
+
     }
-    //printf("Child %d is done! Arg was %s \n\n", getpid(), fileName);
+    
+    fprintf(stdout ,"Child %d is done! Arg was %s \n", getpid(), argv[argIndex]);
+    
+    //This loop will write every struct in namecounts to the pipe
     for(int i = 0; i < size; ++i)
     {
         write(fd1[1], &namecounts[i], sizeof(namecounts[i])); // write entire struct to pipe
