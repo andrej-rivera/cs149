@@ -20,7 +20,6 @@
 #include<unistd.h>
 #include<sys/types.h>
 #include<sys/wait.h> 
-//#include<sys/wait.h>
 //This function takes in a string as an input argument
 int main(int argc, char *argv[]) {
 
@@ -31,16 +30,12 @@ int main(int argc, char *argv[]) {
 
 
 
-    // Initialize variables
+    // Setup struct
     struct my_data { // data structure that will store a name and the # of times it appears
         char name[30];
         int count;
     };
     struct my_data namecounts[100]; // array of 100 names & counts
-
-    int i = 0; //line counter
-    char string[30]; //variable to hold strings read from fgets
-
 
     // Setup pipe
     int fd[2]; // first pipe to send args to children
@@ -86,11 +81,11 @@ int main(int argc, char *argv[]) {
         close(fd1[1]); // close writing side from child-parent pipe (parent reads)
     	wait(NULL); // wait for one child to finish
     	
-    	char string[30]; // string to store names from pipe
+        struct my_data pipedStruct; // struct to store read namecounts
     	int size = 0;  // current size of namecounts
-    	int bytesRead = 30; // read will return != 30, if pipe reaches the end
+    	int bytesRead = sizeof(pipedStruct); // read will return != 30, if pipe reaches the end
     	
-    	while((bytesRead = read(fd1[0], string, 30) == 30)) // loop until pipe is empty
+    	while((bytesRead = read(fd1[0], &pipedStruct, sizeof(pipedStruct))) == sizeof(pipedStruct)) // loop until pipe is empty
     	{
     	    //printf("%s", string);
  
@@ -100,11 +95,11 @@ int main(int argc, char *argv[]) {
             //This loop traverses the namecounts struct and checks for duplicates
             for(int i = 0; i < size; ++i)
             {
-                if(strcmp(string, namecounts[i].name) == 0) //if string matches w/ a name in array
+                if(strcmp(pipedStruct.name, namecounts[i].name) == 0) //if string matches w/ a name in array
                 {
                     //printf("%s at %d\n", string, namecounts[i].count);
                     check = 0; //set check to 0
-                    namecounts[i].count++; // increment by 1
+                    namecounts[i].count += pipedStruct.count; 
                 }
 
                 if(!check)
@@ -112,13 +107,12 @@ int main(int argc, char *argv[]) {
            }
            if(check) //if check is still 1 after looping through array, add it to the array
            {
-               strcpy(namecounts[size].name, string); // add to namecounts data structure
-               namecounts[size].count = 0; // first, initialize to 0 in case of junk
-               namecounts[size].count++; // increment by 1
+               strcpy(namecounts[size].name, pipedStruct.name); 
+               namecounts[size].count = pipedStruct.count;
                size++;
            }
-           i++;
     	}
+    	
     	//printf("size of array is %d\n", size);
         for(int i = 0; i < size; ++i)
         {
@@ -142,6 +136,11 @@ int main(int argc, char *argv[]) {
         
     }
     
+    //loop vars
+    int i = 0; //line counter
+    char string[30]; //variable to hold strings read from fgets
+    int size = 0; // size of namecounts
+    
     //This loop will read lines from the text file using fgets and will stop when the file has ended
     while(fgets(string, 30, textFile) != NULL) // loop until end of file
     {
@@ -153,11 +152,40 @@ int main(int argc, char *argv[]) {
         }
         string[strcspn(string, "\n")] = 0; //formatting, removes trailing \n from string
 	
+	
+	int check = 1; //checker for duplicate
+    	    
+        //This loop traverses the namecounts struct and checks for duplicates
+        for(int i = 0; i < size; ++i)
+        {
+            if(strcmp(string, namecounts[i].name) == 0) //if string matches w/ a name in array
+            {
+                //printf("%s at %d\n", string, namecounts[i].count);
+                check = 0; //set check to 0
+                namecounts[i].count++; // increment by 1
+            }
+
+            if(!check)
+               break;
+       }
+       if(check) //if check is still 1 after looping through array, add it to the array
+       {
+           strcpy(namecounts[size].name, string); // add to namecounts data structure
+           namecounts[size].count = 0; // first, initialize to 0 in case of junk
+           namecounts[size].count++; // increment by 1
+           size++;
+       }
+       
 	// Write name to parent
-	write(fd1[1], string, 30);
+	//write(fd1[1], string, 30);
 	//printf("wrote %s\n", string);
     }
     //printf("Child %d is done! Arg was %s \n\n", getpid(), fileName);
+    for(int i = 0; i < size; ++i)
+    {
+        write(fd1[1], &namecounts[i], sizeof(namecounts[i])); // write entire struct to pipe
+    }
+
     fclose(textFile);
     exit(0);
 }
