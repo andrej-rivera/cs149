@@ -38,7 +38,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    
+    //Initialize variables
+    struct my_data { // data structure that will store a name and the # of times it appears
+        char name[30];
+        int count;
+    };
+    struct my_data namecounts[100]; // array of 100 names & counts
 
     int i = 0; //line counter
     int currentSize = 0; //reflects the current size of the array
@@ -73,6 +78,7 @@ int main(int argc, char *argv[]) {
         if(check == 1) //if check is still 1 after looping through array, add it to the array
         {
             strcpy(namecounts[currentSize].name, string); // add to namecounts data structure
+            namecounts[currentSize].count = 0;
             namecounts[currentSize].count++; // increment by 1
             currentSize++;
         }
