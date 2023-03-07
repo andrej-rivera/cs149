@@ -1,8 +1,9 @@
-/**
- * Assignment 2 - count of names (parallel)
- * Description: This program takes in an file path argument from the terminal and reads it.
- * Given a list of names, it will count all the occurences each name appears.
- * Author names: Andre Rivera, Tanisha Damle
+ /**
+ * Assignment 2 - count of names parallel
+ * Description: This program takes in one or more input files on the command line and reads it. 
+ * Given a list of names, it will count all the occurences each name appears in a parallel fashion
+ * using multiple processes.
+ * Author names: Andre Rivera, Tanisha Damle 
  * Author emails: andre.rivera@sjsu.edu, tanisha.damle@sjsu.edu
  * Last modified date: 2/20/23
  * Creation date: 2/19/23
