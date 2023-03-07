@@ -63,10 +63,11 @@ int main(int argc, char *argv[]) {
             close(fd1[0]); // close reading side from child-parent pipe (child writes)
             break; // break out of loop to prevent forking
         }
-        argIndex++;
+        argIndex++;  // increment index for next child
     }
 
-    if(pid > 0) // if parent, add up structs and print
+    // if parent, add up structs and print
+    if(pid > 0) 
     {
         close(fd1[1]); // close writing side from child-parent pipe (parent reads)
     	wait(NULL); // wait for one child to finish
@@ -87,9 +88,8 @@ int main(int argc, char *argv[]) {
             {
                 if(strcmp(pipedStruct.name, namecounts[i].name) == 0) //if string matches w/ a name in array
                 {
-                    //printf("%s at %d\n", string, namecounts[i].count);
                     check = 0; //set check to 0
-                    namecounts[i].count += pipedStruct.count; 
+                    namecounts[i].count += pipedStruct.count; // add count
                 }
 
                 if(!check)
@@ -97,8 +97,8 @@ int main(int argc, char *argv[]) {
            }
            if(check) //if check is still 1 after looping through array, add it to the array
            {
-               strcpy(namecounts[size].name, pipedStruct.name); 
-               namecounts[size].count = pipedStruct.count;
+               strcpy(namecounts[size].name, pipedStruct.name); // copy over name
+               namecounts[size].count = pipedStruct.count; // set count
                size++;
            }
     	}
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
     	//printf("size of array is %d\n", size);
         for(int i = 0; i < size; ++i)
         {
-            printf("%s: %d\n", namecounts[i].name, namecounts[i].count);
+            fprintf(stdout, "%s: %d\n", namecounts[i].name, namecounts[i].count);
         }
 
         return 0;
@@ -120,8 +120,8 @@ int main(int argc, char *argv[]) {
     if(textFile == NULL) //edge case for when fopen fails to open a file
     {
 
-        fprintf(stderr, "range: cannot open file\n");
-        return 1;
+        fprintf(stderr, "range: cannot open file %s\n", argv[argIndex]);
+        exit(1);
         
     }
     
@@ -136,7 +136,7 @@ int main(int argc, char *argv[]) {
         ++i;
         if(isspace(string[0])) //if whitespace, print to stderror
         {
-            fprintf(stderr,"Warning - Line %d is empty\n", i);
+            fprintf(stderr,"Warning - file %s line %d is empty\n", argv[argIndex], i);
             continue;
         }
         string[strcspn(string, "\n")] = 0; //formatting, removes trailing \n from string
@@ -166,7 +166,7 @@ int main(int argc, char *argv[]) {
 
     }
     
-    fprintf(stdout ,"Child %d is done! Arg was %s \n", getpid(), argv[argIndex]);
+    //fprintf(stdout ,"Child %d is done! Arg was %s \n", getpid(), argv[argIndex]);
     
     //This loop will write every struct in namecounts to the pipe
     for(int i = 0; i < size; ++i)
