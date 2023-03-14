@@ -37,7 +37,7 @@ main(void)
 		sleep(8);
 		exit(0);				/* normal exit */
 	}
-
+	printf("Process ID: %d\n", getpid());
 	sleep(6);					/* fourth child */
 	kill(getpid(), SIGKILL);	/* terminate w/signal, no core dump */
 	exit(6);					/* shouldn't get here */
