@@ -17,7 +17,7 @@ int main(void) {
    }
    
    int newCount = 0;
-   for(int i = 1; i < count; i++){
+   for(int i = 0; i < count; i++){
       if(input[i] != ' '){
          input2[newCount] = input[i];
          newCount++;
