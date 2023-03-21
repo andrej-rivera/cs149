@@ -1,0 +1,620 @@
+    1  sudo whoami
+    2  sudo apt update && sudo apt upgrade -y
+    3  sudo snap refresh
+    4  ls
+    5  ./autorun.sh
+    6  sudo apt install gcc
+    7  sudo apt install make
+    8  sudo snap install clion --classic
+    9  cat > testfile.txt
+   10  git
+   11  git version
+   12  sudo apt install git
+   13  git
+   14  pwd
+   15  git init
+   16  git remote add origin https://github.com/andrej-rivera/cs149.git
+   17  git config --global user.password [A
+   18  git config --global user.name "andrej-rivera"
+   19  mkdir WS1
+   20  cd WS1
+   21  git add.
+   22  git add .
+   23  wget -O out.pdf https://tinyurl.com/yy94jltt
+   24  ls -latr
+   25  history > cmds.log
+   26  git add cmds.log *.c
+   27  git commit -m "First commit" -a
+   28  git branch
+   29  git push -u origin master
+   30  git branch -M master
+   31  git push -u origin master
+   32  git status
+   33  git add .
+   34  git status
+   35  git commit -m "First commit" -a
+   36  git push -u origin master
+   37  gh auth login
+   38  sudo apt install gh
+   39  gh auth login
+   40  git push -u origin master
+   41  gh auth login
+   42  git push -u origin master
+   43  gcc 1_15.c -o prog
+   44  chmod 777 prog*
+   45  ./prog
+   46  gcc 1_16.c -o prog
+   47  chmod 777 prog*
+   48  ./prog
+   49  gcc 1_17.c -o prog
+   50  chmod 777 prog*
+   51  ./prog
+   52  gcc 1_18.c -o prog
+   53  chmod 777 prog*
+   54  ./prog
+   55  gcc 1_19.c -o prog
+   56  chmod 777 prog*
+   57  ./prog
+   58  gcc 1_20.c -o prog
+   59  chmod 777 prog*
+   60  ./prog
+   61  gcc 1_20.c -o prog
+   62  chmod 777 prog*
+   63  ./prog
+   64  git add *.c
+   65  git status
+   66  git commit -m "Push WS1 .c files" -a
+   67  git push
+   68  sudo apt update
+   69  sudo apt upgrade
+   70  gcc -version
+   71  gcc --version
+   72  git status
+   73  git push -u origin master
+   74  gcc
+   75  gcc -v
+   76  gcc -o 1_15.c
+   77  gcc -o 1_15.c output
+   78  gcc -o 1_15.c output.txt
+   79  gcc -o   1_15.c
+   80  gcc -i 1_15.c
+   81  gcc -o output 1_1.c
+   82  gcc -o 1_16.c
+   83  gcc -o 1_16.c output
+   84  gcc -g -o prog 1_15.c
+   85  gdb ./prog
+   86  gcc -g -o prog 1_16.c
+   87  gdb ./prog
+   88  gcc -g -o prog 1_17.c
+   89  gdb ./prog
+   90  git add .c
+   91  git status
+   92  git push
+   93  git pull
+   94  git revert
+   95  git push
+   96  git add
+   97  git status
+   98  git commit -m "added comments to ws1 code"
+   99  git add *.c
+  100  git commit -m "added comments to ws1 code"
+  101  git push
+  102  cd .
+  103  cd /
+  104  cd Desktop
+  105  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andre.rivera
+  106  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andrerivera
+  107  ls
+  108  pwd
+  109  cd Desktop
+  110  cd "CS 149"
+  111  mkdir WS2
+  112  cd WS2
+  113  ls -latr
+  114  echo $?
+  115  man ps
+  116  ps aux
+  117  top
+  118  history > worksheet2.log
+  119  tail worksheet2.log
+  120  cat worksheet2.log
+  121  sudo adduser andre vboxsf
+  122  git add *.c
+  123  git add worksheet2.log
+  124  git commit -m "Worksheet 2 commit - .C & .log"
+  125  git status
+  126  git push
+  127  git pull
+  128  cd ..
+  129  cd "CS 149"
+  130  git pull
+  131  git status
+  132  git config pull.rebase false
+  133  git pull
+  134  cd WS2
+  135  git add *.c worksheet2.log
+  136  git status
+  137  git push
+  138  git status
+  139  cd ..
+  140  git clone master https://github.com/TanishaD111/cs149.git cs149_tanisha
+  141  git clone -b  master https://github.com/TanishaD111/cs149.git cs149_tanisha
+  142  cd cs149_tanisha
+  143  cd WS2
+  144  gcc -g -o 2_25.c
+  145  gcc -g -o test  2_25.c
+  146  gdb ./test
+  147  gdb --args test 2 4
+  148  gcc -g -o test  2_26.c
+  149  gcc -g -o test  2_29.c
+  150  gcc --v
+  151  gcc --version
+  152  gcc -Wall -o test 2_29.c
+  153  gcc -Wall -Werror -g -o test  2_29.c
+  154  gcc -o test  2_29.c -Wall
+  155  gcc -o test 2_29.c
+  156  gcc -o test  2_29.c -Wall -lm
+  157  gdb --args test 2 4 5
+  158  gcc -g -o test  2_29.c
+  159  git pull
+  160  gcc -g -o test  2_25.c -lm -Wall -Werror
+  161  gdb --args test
+  162  gcc -g -o test  2_29.c -lm -Wall -Werror
+  163  gdb --args test
+  164  gcc -g -o test  2_32.c -lm -Wall -Werror
+  165  gdb --args test
+  166  gcc -g -o test  2_34.c -lm -Wall -Werror
+  167  gdb --args test
+  168  gcc -g -o test  3_22.c -lm -Wall -Werror
+  169  gdb --args test
+  170  git clone -b master https://github.com/TanishaD111/cs149 cs149_tanishadamle
+  171  gcc -g -o test  3_22.c -lm -Wall -Werror
+  172  gcc -g -o test  2_29.c -lm -Wall -Werror
+  173  gcc -g -o test  2_29.c  -Wall -Werror
+  174  gcc -g -o test  2_29.c -lm -Wall -Werror
+  175  gcc -o test  2_29.c -lm -Wall -Werror
+  176  gcc -o test  2_29.c -Wall -lm
+  177  gcc -o test  2_32.c -lm
+  178  gdb --args test
+  179  gcc -o test  2_34.c -lm
+  180  gdb --args test
+  181  gcc -o test  3_22.c -lm
+  182  gcc -o test  3_22.c -lm -wall
+  183  gcc -o test  3_22.c -lm -Wall
+  184  gdb --args test
+  185  gcc -o test  countnames.c -lm -Wall
+  186  ./countnames names.txt
+  187  ./test names.txt
+  188  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andrerivera
+  189  gcc -o countnames countnames.c -Wall -Werror
+  190  ./countnames names.txt 2> /dev/null 
+  191  cat > empty.txt
+  192  ./countnames empty.txt 
+  193  cat > empty.txt
+  194  ./countnames empty.txt 
+  195  ./countnames names_long_redundant.txt 
+  196  ./countnames dne.txt 
+  197  ./countnames 
+  198  ./countnames names.txt
+  199  gcc -o countnames countnames.c -Wall -Werror
+  200  ./countnames names.txt
+  201  ./countnames 
+  202  ./countnames dne.txt 
+  203  ./countnames 
+  204  ./countnames empty.txt
+  205  ./countnames names_long_redundant.txt 
+  206  gcc -o countnames countnames.c -Wall -Werror
+  207  ./countnames dne.txt 
+  208  ./countnames empty.txt
+  209  ./countnames names.txt
+  210  ./countnames 
+  211  ./countnames names_long_redundant.txt 
+  212  ./countnames names_long_redundant.txt 2> /dev/null | sort
+  213  ./countnames names_long_redundant.txt > /dev/null | sort
+  214  git status
+  215  git commit -m "Assignment 1 - Finalized edge cases & comments
+  216  "
+  217  git push
+  218  git status
+  219  git add countnames.c
+  220  git commit -m "Assignment 1 - Finalized edge cases & comments
+  221  "
+  222  git push
+  223  wget https://github.com/torvalds/linux/archive/master.zip
+  224  unzip master.zip
+  225  cd linux-master
+  226  pwd
+  227  alias l='ls -latr'
+  228  l
+  229  find .-name mem.c
+  230  find . -name mem.c
+  231  find . -name mem.c | xargs grep 86
+  232  find . -name mem.c | xargs head
+  233  cd ..
+  234  history > worksheet3.log
+  235  head worksheet3.log
+  236  git add *.c workshet3.log
+  237  git add *.c worksheet3.log
+  238  git status
+  239  git commit -m "Worksheet 3 - Pushing .c files & .log"
+  240  git add countnames.c
+  241  cd ..
+  242  git add countnames.c
+  243  git status
+  244  git add A1/countnames.c
+  245  git commit
+  246  git commit -m "Assignment 1 - Added title"
+  247  git push
+  248  cd ws3
+  249  cd WS3
+  250  gcc -o test 4_14.c -Wall -Werror
+  251  gcc -o test 4_16.c -Wall -Werror
+  252  gcc -o test 5_16.c -Wall -Werror
+  253  gcc -o test 5_17.c -Wall -Werror
+  254  gcc -o test 5_18.c -Wall -Werror
+  255  gcc -o test 5_21.c -Wall -Werror
+  256  gcc -o test 5_22.c -Wall -Werror
+  257  gcc -o test 5_23.c -Wall -Werror
+  258  git add 5_21.c
+  259  git status
+  260  git commit -m "Worksheet 3 - Fixed compile error"
+  261  git push
+  262  cat 4_14.txt
+  263  cat > 4_14.txt
+  264  cat > 4_16.txt
+  265  cat > 5_16.txt
+  266  cat > 5_17.c
+  267  cat > 5_18.c
+  268  cat > 5_21.c
+  269  cat > 5_22.c
+  270  cat > 5_23.c
+  271  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andrerivera
+  272  git pull
+  273  gcc -o test 6_20.c -Wall -Werror
+  274  ./ test
+  275  ./test
+  276  gcc -o test 6_30.c -Wall -Werror
+  277  ./test
+  278  git pull
+  279  cd ..
+  280  git clone -b master http://github.com/andrej-rivera/cs149 cs_149test
+  281  git pull
+  282  git pull
+  283  ./countnames_parallel.c names1.txt names2.txt
+  284  gcc -o test countnames_parallel.c -Wall -Werror
+  285  git branch
+  286  git branch -a
+  287  git checkout andre-branch-for-A2
+  288  ..
+  289  cd ..
+  290  git checkout andre-branch-for-A2
+  291  git branch
+  292  git checkout andre-branch-for-A2
+  293  git status
+  294  git pull
+  295  git branch -a
+  296  git checkout andre-branch-for-A2
+  297  git status
+  298  cd A2
+  299  gcc -o test countnames_parallel.c -Wall -Werror
+  300  clear
+  301  ./test names1.txt names2.txt
+  302  clear
+  303  gcc -o test countnames_parallel.c -Wall -Werror
+  304  ./test names1.txt names2.txt
+  305  clear
+  306  gcc -o test countnames_parallel.c -Wall -Werror
+  307  ./test names1.txt names2.txt
+  308  gcc -o test countnames_parallel.c -Wall -Werror
+  309  ./test names1.txt names2.txt
+  310  gcc -o test countnames_parallel.c -Wall -Werror
+  311  ./test names1.txt names2.txt
+  312  gcc -o test countnames_parallel.c -Wall -Werror
+  313  ./test names1.txt names2.txt
+  314  gcc -o test countnames_parallel.c -Wall -Werror
+  315  gcc -o test countnames.c -Wall -Werror
+  316  ./test names_long_redundant.txt
+  317  gcc -o test countnames.c -Wall -Werror
+  318  ./test names_long_redundant.txt
+  319  clear
+  320  ./test names_long_redundant.txt
+  321  clear
+  322  ./test names_long_redundant.txt | sort
+  323  git add countnames.c
+  324  clear
+  325  gcc -o test countnames_parallel.c -Wall -Werror
+  326  ./countnames_parallel.c names1.txt names2.txt
+  327  gcc -o test countnames_parallel.c -Wall -Werror
+  328  ./test names1.txt names2.txt
+  329  clear
+  330  gcc -o test countnames_parallel.c -Wall -Werror
+  331  ./test names1.txt names2.txt
+  332  gcc -o test countnames_parallel.c -Wall -Werror
+  333  clear
+  334  gcc -o test countnames_parallel.c -Wall -Werror
+  335  ./test names1.txt names2.txt
+  336  gcc -o test countnames_parallel.c -Wall -Werror
+  337  ./test names1.txt names2.txt
+  338  gcc -o test countnames_parallel.c -Wall -Werror
+  339  ./test names1.txt names2.txt
+  340  gcc -o test countnames_parallel.c -Wall -Werror
+  341  ./test names1.txt names2.txt
+  342  gcc -o test countnames_parallel.c -Wall -Werror
+  343  ./test names1.txt names2.txt
+  344  gcc -o test countnames_parallel.c -Wall -Werror
+  345  ./test names1.txt names2.txt
+  346  git status
+  347  git commit -m "Added pipes & forks, functionality is not completed."
+  348  git add *.c
+  349  git commit -m "Added pipes & forks, functionality is not completed."
+  350  git push
+  351  gcc -o test countnames_parallel.c -Wall -Werror
+  352  ./test names1.txt names2.txt
+  353  gcc -o test countnames_parallel.c -Wall -Werror
+  354  ./test names1.txt names2.txt
+  355  gcc -o test countnames_parallel.c -Wall -Werror
+  356  ./test names1.txt names2.txt
+  357  gcc -o test countnames_parallel.c -Wall -Werror
+  358  ./test names1.txt names2.txt
+  359  gcc -o test countnames_parallel.c -Wall -Werror
+  360  ./test names1.txt names2.txt
+  361  gcc -o test countnames_parallel.c -Wall -Werror
+  362  ./test names1.txt names2.txt
+  363  gcc -o test countnames_parallel.c -Wall -Werror
+  364  ./test names1.txt names2.txt
+  365  gcc -o test countnames_parallel.c -Wall -Werror
+  366  ./test names1.txt names2.txt
+  367  gcc -o test countnames_parallel.c -Wall -Werror
+  368  ./test names1.txt names2.txt
+  369  gcc -o test countnames_parallel.c -Wall -Werror
+  370  ./test names1.txt names2.txt
+  371  gcc -o test countnames_parallel.c -Wall -Werror
+  372  ./test names1.txt names2.txt
+  373  gcc -o test countnames_parallel.c -Wall -Werror
+  374  ./test names1.txt names2.txt
+  375  gcc -o test countnames_parallel.c -Wall -Werror
+  376  ./test names1.txt names2.txt
+  377  gcc -o test countnames_parallel.c -Wall -Werror
+  378  ./test names1.txt names2.txt
+  379  gcc -o test countnames_parallel.c -Wall -Werror
+  380  ./test names1.txt names2.txt
+  381  gcc -o test countnames_parallel.c -Wall -Werror
+  382  ./test names1.txt names2.txt
+  383  gcc -o test countnames_parallel.c -Wall -Werror
+  384  ./test names1.txt names2.txt
+  385  gcc -o test countnames_parallel.c -Wall -Werror
+  386  ./test names1.txt names2.txt
+  387  gcc -o test countnames_parallel.c -Wall -Werror
+  388  clear
+  389  gcc -o test countnames_parallel.c -Wall -Werror
+  390  ./test names1.txt names2.txt
+  391  gcc -o test countnames_parallel.c -Wall -Werror
+  392  ./test names1.txt names2.txt
+  393  gcc -o test countnames_parallel.c -Wall -Werror
+  394  ./test names1.txt names2.txt
+  395  gcc -o test countnames_parallel.c -Wall -Werror
+  396  ./test names1.txt names2.txt
+  397  gcc -o test countnames_parallel.c -Wall -Werror
+  398  ./test names1.txt names2.txt
+  399  gcc -o test countnames_parallel.c -Wall -Werror
+  400  ./test names1.txt names2.txt
+  401  clear
+  402  gcc -o test countnames_parallel.c -Wall -Werror
+  403  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt
+  404  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt | sort
+  405  git status
+  406  git add countnames_parallel.c
+  407  git commit -m "fixed error in A1 & finished a working ver. of A2"
+  408  git push
+  409  git status
+  410  ./countnames_parallel.c names1.txt names2.txt
+  411  ./countnames_parallel names1.txt names2.txt
+  412  ./test names1.txt
+  413  ./test names2.txt
+  414  ./test names1.txt names2.txt
+  415  ./test names1.txt names2.txt names2.txt
+  416  ./test names1.txt names2.txt names2.txt names3.txt
+  417  gcc -o test countnames_parallel.c -Wall -Werror
+  418  ./test names1.txt names2.txt names2.txt names3.txt
+  419  ./test names1.txt names2.txt
+  420  gcc -o test countnames_parallel.c -Wall -Werror
+  421  ./test names1.txt names2.txt
+  422  gcc -o test countnames_parallel.c -Wall -Werror
+  423  clear
+  424  gcc -o test countnames_parallel.c -Wall -Werror
+  425  clear
+  426  ./test names1.txt names2.txt
+  427  lear
+  428  gcc -o test countnames_parallel.c -Wall -Werror
+  429  ./test names1.txt names2.txt
+  430  gcc -o test countnames_parallel.c -Wall -Werror
+  431  cc -o test countnames_parallel.c -Wall -Werror
+  432  gcc -o test countnames_parallel.c -Wall -Werror
+  433  clear
+  434  gcc -o test countnames_parallel.c -Wall -Werror
+  435  ./test names1.txt names2.txt
+  436  ./test names1.txt names2.txt names2.txt
+  437  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt
+  438  gcc -o test countnames_parallel.c -Wall -Werror
+  439  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt
+  440  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt | sort
+  441  git add *.c
+  442  git commit -m "V2 of countnames_parallel.c" -d "Child writes a whole struct into pipe & parent will read each struct piped and compile them"
+  443  git commit -m "V2 of countnames_parallel.c"
+  444  git commit --amend
+  445  git push
+  446  git commit --amend
+  447  git push
+  448  git pull
+  449  git push
+  450  gcc -o countnames countnames.c -Wall -Werror
+  451  ./countnames.c names.txt
+  452  ./countnames names.txt
+  453  ./countnames names_long_redundant
+  454  ./countnames names_long_redundant.txt
+  455  git pull
+  456  git status
+  457  git branch
+  458  git add countnames_parallel.c
+  459  cd ..
+  460  cd A2
+  461  git add countnames_parallel.c
+  462  git commit -m "first commit for A2
+  463  "
+  464  git push
+  465  cd ..
+  466  cd A1
+  467  ./countnames names_long_redundant
+  468  ./test names_long_redundant
+  469  ./test names_long_redundant.txt
+  470  ./test names_long_redundant.txt | sort
+  471  gcc -o test countnames_parallel.c -Wall -Werror
+  472  ./test names1.txt
+  473  ./test names1.txt names2.txt
+  474  ./test names1.txt names2.txt names2.txt names.txt
+  475  gcc -o test countnames_parallel.c -Wall -Werror
+  476  ./test names1.txt names2.txt names2.txt names.txt
+  477  ./test names1.txt names2.txt names2.txt 
+  478  ./test names1.txt names2.txt names1.txt
+  479  gcc -o test countnames_parallel.c -Wall -Werror
+  480  ./test names1.txt names2.txt names1.txt
+  481  gcc -o test countnames_parallel.c -Wall -Werror
+  482  ./test names1.txt names2.txt names1.txt
+  483  gcc -o test countnames_parallel.c -Wall -Werror
+  484  ./test names1.txt names2.txt names1.txt
+  485  gcc -o test countnames_parallel.c -Wall -Werror
+  486  ./test names1.txt names2.txt names1.txt
+  487  git add *.c
+  488  git status
+  489  git commit -m "A2 - Removed pipe sending args from parent to child"
+  490  git push
+  491  ./test names1.txt names2.txt names1.txt
+  492  ./test names1.txt names2.txt
+  493  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt
+  494  git add *.c
+  495  ./test names1.txt names2.txt
+  496  ./test names1.txt names2.txt names2.txt
+  497  gcc -o test countnames_parallel.c -Wall -Werror
+  498  ./test names1.txt names2.txt names2.txt
+  499  ./test names1.txt names2.txt names2.txt none.txt
+  500  gcc -o test countnames_parallel.c -Wall -Werror
+  501  ./test names1.txt names2.txt names2.txt none.txt
+  502  gcc -o test countnames_parallel.c -Wall -Werror
+  503  ./test names1.txt names2.txt names2.txt none.txt
+  504  sdas
+  505  ./test names1.txt names2.txt names2.txt 
+  506  clear
+  507  ./test names_long_redundant1.txt names_longredundant2.txt names_long_redundant3.txt
+  508  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt
+  509  ./test names_long_redundant1.txt names_long_redundant.txt names_long_redundant3.txt
+  510  gcc -o test countnames_parallel.c -Wall -Werror
+  511  ./test names_long_redundant1.txt names_long_redundant.txt names_long_redundant3.txt
+  512  clear
+  513  ./test names_long_redundant1.txt ss.txt names_long_redundant3.txt
+  514  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt
+  515  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt | sort
+  516  clear
+  517  git status
+  518  git add *.c
+  519  git status
+  520  git commit -m "A2 - Final Commit, ready for merge
+  521  "
+  522  git push
+  523  git status
+  524  git branch -a
+  525  git checkout master
+  526  git pull
+  527  gcc -o test countnames_parallel.c -Wall -Werror
+  528  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt | sort
+  529  ./test names1.txt names2.txt
+  530  ./test names1.txt names2.txt names2.txt
+  531  ./test
+  532  ./test names1.txt
+  533  git branch -a
+  534  git checkout andre-branch-for-A2
+  535  git pull
+  536  cd ..
+  537  ls
+  538  cd 'Test Clone'
+  539  git clone -b master https://github.com/andrej-rivera/cs149.git  cs149_andrerivera
+  540  cd cs149_andrerivera
+  541  cd a2
+  542  cd A2
+  543  gcc -o test countnames_parallel.c -Wall -Werror
+  544  ./test 
+  545  ./test nah nah
+  546  ./test names1.txt nope names2.txt
+  547  ./test hahasd names1.txt names2.txt names2.txt
+  548  ./test names_long_redundant1.txt names_long_redundant2.txt names_long_redundant3.txt | sort
+  549  gcc -o countnames countnames.c -Wall -Werror
+  550  ./test names_long_redundant.txt | sort
+  551  ./countnames names_long_redundant.txt | sort
+  552  git pull
+  553  git stash
+  554  git pull
+  555  gcc -o countnames countnames.c -Wall -Werror
+  556  ./countnames names_long_redundant.txt | sort
+  557  cd..
+  558  cd ..
+  559  cd A5
+  560  cd W5
+  561  cd ws5
+  562  cd w5
+  563  cd WS5
+  564  gcc -o test ws5.c -Wall -Werror
+  565  ./test
+  566  gcc -o test ws5.c -Wall -Werror
+  567  ./test
+  568  gcc -o test ws5.c -Wall -Werror
+  569  ./test
+  570  gcc -o test ws5.c -Wall -Werror
+  571  ./test
+  572  git ad ws5.c
+  573  git add ws5.c
+  574  git commit -m "WS5 - Tweaked ws5.c to print correct output
+  575  "
+  576  git push
+  577  cd ..
+  578  cd A2
+  579  gcc -o test countnames_parallel.c -Wall -Werror
+  580  gcc  -ansi  -I../include   -DLINUX  -D_GNU_SOURCE  -Wall   -o test1 test1.c  -L../lib -lapue
+  581  ./test1
+  582  gcc  -ansi  -I../include   -DLINUX  -D_GNU_SOURCE  -Wall   -o test1 test1.c  -L../lib -lapue
+  583  ./test1
+  584  git pull
+  585  git add test1.c
+  586  git commit -m "WS6 - Coding Practice"
+  587  git push
+  588  gh
+  589  gh auth login
+  590  git push
+  591  gh auth login
+  592  git push
+  593  git branch 
+  594  git branch master
+  595  git checkout master
+  596  git pull
+  597  git status
+  598  git branch
+  599  git checkout andre-branch-for-A2 
+  600  git checkout master
+  601  git pull
+  602  gcc -o test 5_28.c -Wall -Werror
+  603  gcc -o test 6_35.c -Wall -Werror
+  604  s
+  605  ./test1.c
+  606  ./test1
+  607  git pull
+  608  cd..
+  609  cd ..
+  610  cd "CS 149"
+  611  cd WS7
+  612  ls | wc
+  613  ls | sort
+  614  ls | sort | wc
+  615  ls -latr /bin/ > a.out
+  616  cat a.out | more
+  617  strace ls
+  618  du -sh .
+  619  df -i
+  620  history > worksheet7.log
