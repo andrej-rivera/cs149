@@ -33,13 +33,18 @@ int main(int argc, char *argv[]) {
 			//err_sys("fork error");
 		} 
 		else if (pid == 0) {		/* child */
-		    char* args[2];
-            args[0] = strtok(buf[j], " ");
-            //args[0][strlen(args[0]) - 1] = 0;
-            
-		    args[1] = strtok(buf[j], " ");
-		    //args[1][strlen(args[1]) - 1] = 0;
+		    // Grab command & arg
+		    char* args[30];
+		    char* temp = strdup(buf[j]); // temp string so that buf[j] is not affected
 		    
+            args[0] = strtok(temp, " ");    
+            int argIndex = 1;
+            while((args[argIndex] = strtok(NULL, " ")) != NULL)
+            {
+                argIndex++;
+            }        
+            
+		    // Create output files & set new stdout, stderr
 		    char filename[30];
 		    sprintf(filename, "%d", getpid());
 		    int fdout = open(strcat(filename, ".out"), O_RDWR | O_CREAT | O_APPEND, 0777);
@@ -48,17 +53,50 @@ int main(int argc, char *argv[]) {
 		    dup2(fdout, 1);
 		    dup2(fderr, 2);
 		    
-		    fprintf(fdout, "Starting command %d: child %d pid of parent %d", j + 1, getpid(), getppid());
+		    // Write logs & Execute
+		    fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", j + 1, getpid(), getppid());
 		    
+		    //debug logs
+		    //fprintf(stdout, "%s\n", buf[j]); 
+            //fprintf(stdout, "arg 1 = %s\narg 2 = %s\n", args[0], args[1]);
+
 			execvp(args[0], args);
-			fprintf(stdout, "Finished child %d pid of parent %d", getpid(), getppid());
-			fprintf(stderr, "Exited with exitcode = %d", exitcode);
+			
+			fprintf(stderr, "Error running command (invalid): \"%s\"\n", buf[j]);		
 			close(fdout);
 			close(fderr);
-			exit(127);
+
+			exit(2);
 		}
     }
     
-    while (wait ( NULL) != -1) {  }
-    printf("All Done!\n");
+    int status;
+    
+    // Loop that continues until all children are done
+    while ((pid = wait(&status)) != -1) { 
+        
+        // Open output files & write logs
+        char filename[30];
+        sprintf(filename, "%d", pid);
+        int fdout = open(strcat(filename, ".out"), O_RDWR | O_CREAT | O_APPEND, 0777);
+		sprintf(filename, "%d", pid);
+		int fderr = open(strcat(filename, ".err"), O_RDWR | O_CREAT | O_APPEND, 0777);
+		dup2(fdout, 1);
+	    dup2(fderr, 2);
+	    
+	    fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
+	    
+	    if (WIFEXITED(status))
+	    {
+            fprintf(stderr, "Exited with exitcode = %d\n", status);
+        }
+        else if (WIFSIGNALED(status))
+        {
+            fprintf(stderr, "Killed with signal %d\n", WTERMSIG(status));
+        }
+
+
+        close(fdout);
+        close(fderr);
+    }
 }
