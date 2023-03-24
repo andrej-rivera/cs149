@@ -68,7 +68,7 @@ int main(int argc, char * argv[]) {
     int status;
 
     // Loop that continues until all children are done
-    while ((pid = wait( & status)) != -1) {
+    while ((pid = wait(&status)) != -1) {
 
         // Open output files & write logs
         char filename[30];
@@ -81,10 +81,10 @@ int main(int argc, char * argv[]) {
 
         fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
 
-        if (WIFEXITED(status)) {
-            fprintf(stderr, "Exited with exitcode = %d\n", status);
-        } else if (WIFSIGNALED(status)) {
+        if (WIFSIGNALED(status)) { // if killed forcefully by signal
             fprintf(stderr, "Killed with signal %d\n", WTERMSIG(status));
+        } else { // else if exited normally
+            fprintf(stderr, "Exited with exitcode = %d\n", WEXITSTATUS(status));
         }
 
         close(fdout);
