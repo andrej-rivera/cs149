@@ -16,7 +16,6 @@ int main(int argc, char *argv[]) {
 	
 	//loop that takes in inputs
 	while (fgets(buf[i], 30, stdin) != NULL) {
-
 		if (buf[i][strlen(buf[i]) - 1] == '\n')
 			buf[i][strlen(buf[i]) - 1] = 0; /* replace newline with null */
         
