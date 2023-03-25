@@ -21,15 +21,14 @@
 int main(int argc, char *argv[]) {
     
     int position = 0;
-    FILE *textFile;
-    textFile = fopen(argv[position], "r");
+    
     
     int status;
     pid_t pid;
     char string[30];
     
     
-    while(fgets(string, 30, textFile) != NULL) {
+    while(fgets(string, 30, stdin) != NULL) {
     
         //removing the trailing new line from string
         if (string[strlen(string) - 1] == '\n') {
@@ -40,6 +39,7 @@ int main(int argc, char *argv[]) {
         pid = fork(); // creates a child process
 
         if(pid < 0) { // if error in fork
+            //err_sys("fork error");
             fprintf(stderr, "Fork Failed\n");
             return 1;
         }
@@ -47,15 +47,12 @@ int main(int argc, char *argv[]) {
         else if(pid == 0) { // child process
         
             char *arg[31] = {0};
-            char *word = strtok(string, " "); 
-            int count = 0;
-
-            while(word != NULL){
-                arg[count] = word;
-                word = strtok(NULL, " ");
-                count++;
+            arg[0] = strtok(string, " ");
+            int argIndex = 1;
+            while ((arg[argIndex] = strtok(NULL, " ")) != NULL) {
+                argIndex++;
             }
-            arg[count] = NULL;
+            arg[argIndex] = NULL;
             
             // output and error files
         
@@ -66,10 +63,10 @@ int main(int argc, char *argv[]) {
             sprintf(err_file, "%d.err", getpid());
             
             //open log files
-            int fd_1 = open(out_file, O_RDWR | O_CREAT | O_APPEND, 0777);
-            int fd_2 = open(err_file, O_RDWR | O_CREAT | O_APPEND, 0777);
-            dup2(fd_1, 1);
-            dup2(fd_2, 2);
+            int fdout = open(out_file, O_RDWR | O_CREAT | O_APPEND, 0777);
+            dup2(fdout, 1);
+            int fderr = open(err_file, O_RDWR | O_CREAT | O_APPEND, 0777);
+            dup2(fderr, 2);
             
             fprintf(stdout,"Starting command %d: child %d pid of parent %d\n", position, getpid(), getppid());
             fflush(stdout);
@@ -82,6 +79,16 @@ int main(int argc, char *argv[]) {
                 execvp(arg[0], arg);
             }
             
+            // Write logs & Execute
+      //      fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", i, getpid(), getppid());
+
+            //debug logs
+            //fprintf(stdout, "%s\n", buf[j]); 
+            //fprintf(stdout, "arg 1 = %s\narg 2 = %s\n", args[0], args[1]);
+
+            //execvp(args[0], args);
+
+            
         }
     }  
     
@@ -90,26 +97,29 @@ int main(int argc, char *argv[]) {
     int count = 0;
     while((pid = wait(&status)) > 0) {
         
-        char out_file[30] = {0}; // array to hold stdout
-        char err_file[30] = {0}; // array to hold stderr
+        char out_file[30]; // array to hold stdout
+        char err_file[30]; // array to hold stderr
 
         //push the logs to the files
         sprintf(out_file, "%d.out", pid);
         sprintf(err_file, "%d.err", pid);
 
         //open log files
-        int fd_1 = open(out_file, O_RDWR | O_CREAT | O_APPEND, 0777);
-        dup2(fd_1, 1);
-        fflush(stdout);
-        int fd_2 = open(err_file, O_RDWR | O_CREAT | O_APPEND, 0777);
-        dup2(fd_2, 2);
+        int fdout = open(out_file, O_RDWR | O_CREAT | O_APPEND, 0777);
+        dup2(fdout, 1);
+        
+        int fderr = open(err_file, O_RDWR | O_CREAT | O_APPEND, 0777);
+        dup2(fderr, 2);
+ 	
+ 	fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
+	//fflush(stdout);
 
-        //if process exited normally
+        //normal termination with an exit code
         if (WIFEXITED(status)) {
-            fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
+            
             fprintf(stderr, "Exited with exitcode = %d\n", WEXITSTATUS(status));
         }
-        //if process killed
+        //abnormal termination with an exit code
         else if (WIFSIGNALED(status)) {
             fprintf(stderr, "Killed with signal %d\n", WTERMSIG(status));
         }
