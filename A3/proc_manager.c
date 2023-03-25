@@ -28,9 +28,9 @@ int main(int argc, char * argv[]) {
 
     // Loop that takes in inputs (loops until EOF or ctrl-D is signalled)
     while (fgets(buf[i], 30, stdin) != NULL) {
-        if (buf[i][strlen(buf[i]) - 1] == '\n')
+        if (buf[i][strlen(buf[i]) - 1] == '\n') {
             buf[i][strlen(buf[i]) - 1] = 0; /* replace newline with null */
-
+	}
         i++;
     }
     printf("\n");
@@ -41,6 +41,8 @@ int main(int argc, char * argv[]) {
     for (int j = 0; j < i; ++j) {
         if ((pid = fork()) < 0) { // if error forking
             //err_sys("fork error");
+            fprintf(stderr, "Fork Failed\n");
+            return 1;
         } else if (pid == 0) {  /* child */
             // Grab command & arg
             char * args[30];
@@ -98,11 +100,13 @@ int main(int argc, char * argv[]) {
         // Final print statements to .err file
         if (WIFSIGNALED(status)) { // if killed forcefully by signal
             fprintf(stderr, "Killed with signal %d\n", WTERMSIG(status));
-        } else { // else if exited normally
+        } else if (WIFEXITED(status)) { // else if exited normally
             fprintf(stderr, "Exited with exitcode = %d\n", WEXITSTATUS(status));
         }
 
         close(fdout);
         close(fderr);
     }
+    
+    return 0;
 }
