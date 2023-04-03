@@ -1,0 +1,16 @@
+  752  gcc  -ansi  -I../include   -DLINUX  -D_GNU_SOURCE  -Wall   -o test apue_sigusr.c  -L../lib -lapue
+  753  gcc  -ansi  -I../include   -DLINUX  -D_GNU_SOURCE  -Wall   -o test apue_sigusr.c  -L../lib -apue
+  754  gcc -o test apue_sigusr.c -Wall -Werror -lapue
+  755  gcc  -ansi  -I../   -DLINUX  -D_GNU_SOURCE  -Wall   -o test apue_sigusr.c  -L../ -apue
+  756  gcc  -ansi  -I../WS9/include   -DLINUX  -D_GNU_SOURCE  -Wall   -o test sigusr.c  -L../WS9/lib -lapue
+  757  make sigusr.c
+  758  gcc  -ansi  -I../include   -DLINUX  -D_GNU_SOURCE  -Wall   -o test sigusr.c  -L../lib -lapue
+  759  gcc  -ansi  -I../apue.3e/include   -DLINUX  -D_GNU_SOURCE  -Wall   -o test sigusr.c  -L../apue.3e/lib -lapue
+  760  ./test
+  761  gcc  -ansi  -I../apue.3e/include   -DLINUX  -D_GNU_SOURCE  -Wall   -o test sigusr.c  -L../apue.3e/lib -lapue
+  762  ./test &
+  763  kill -SIGUSR2 22984
+  764  kill -SIGUSR1 22984
+  765  kill -SIGCONT 22984
+  766  kill -9 22984
+  767  history > worksheet.log
