@@ -2,15 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-/**
- *//CS149 assignment#4 helper code.
- *// See the TODO's in the comments below! You need to implement those.
-**/
 
 /**
- *// TRACE_NODE_STRUCT is a linked list of
- *// pointers to function identifiers
- *// TRACE_TOP is the head of the list is the top of the stack
+ * TRACE_NODE_STRUCT is a linked list of pointers to function identifiers
+ * TRACE_TOP is the head of the list is the top of the stack
 **/
 struct TRACE_NODE_STRUCT {
    char* functionid; 			// ptr to function identifier (a function name)
@@ -26,8 +21,7 @@ static TRACE_NODE* TRACE_TOP = NULL; 		// ptr to the top of the stack
  * The purpose of this stack is to trace the sequence of function calls,
  * just like the stack in your computer would do.
  * The "global" string denotes the start of the function call trace.
- * The char *p parameter is the name of the new function that is added to the call
-trace.
+ * The char *p parameter is the name of the new function that is added to the call trace.
  * See the examples of calling PUSH_TRACE and POP_TRACE below
  * in the main, make_extend_array, add_column functions.
 **/
@@ -121,10 +115,8 @@ char* PRINT_TRACE()
 // TODO REALLOC should also print info about memory usage.
 // TODO For this purpose, you need to add a few lines to this function.
 // For instance, example of print out:
-// "File mem_tracer.c, line X, function F reallocated the memory segment at address
-A to a new size S"
-// Information about the function F should be printed by printing the stack (use
-PRINT_TRACE)
+// "File mem_tracer.c, line X, function F reallocated the memory segment at address A to a new size S"
+// Information about the function F should be printed by printing the stack (use PRINT_TRACE)
 void* REALLOC(void* p,int t,char* file,int line)
 {
    p = realloc(p,t);
@@ -137,10 +129,8 @@ void* REALLOC(void* p,int t,char* file,int line)
 // TODO MALLOC should also print info about memory usage.
 // TODO For this purpose, you need to add a few lines to this function.
 // For instance, example of print out:
-// "File mem_tracer.c, line X, function F allocated new memory segment at address A
-to size S"
-// Information about the function F should be printed by printing the stack (use
-PRINT_TRACE)
+// "File mem_tracer.c, line X, function F allocated new memory segment at address A to size S"
+// Information about the function F should be printed by printing the stack (use PRINT_TRACE)
 void* MALLOC(int t,char* file,int line)
 {
    void* p;
@@ -154,10 +144,8 @@ void* MALLOC(int t,char* file,int line)
 // TODO FREE should also print info about memory usage.
 // TODO For this purpose, you need to add a few lines to this function.
 // For instance, example of print out:
-// "File mem_tracer.c, line X, function F deallocated the memory segment at address
-A"
-// Information about the function F should be printed by printing the stack (use
-PRINT_TRACE)
+// "File mem_tracer.c, line X, function F deallocated the memory segment at address A"
+// Information about the function F should be printed by printing the stack (use PRINT_TRACE)
 void FREE(void* p,char* file,int line)
 {
    free(p);
@@ -170,8 +158,7 @@ void FREE(void* p,char* file,int line)
 
 // -----------------------------------------
 // function add_column will add an extra column to a 2d array of ints.
-// This function is intended to demonstrate how memory usage tracing of realloc is
-done
+// This function is intended to demonstrate how memory usage tracing of realloc is done
 // Returns the number of new columns (updated)
 int add_column(int** array,int rows,int columns)
 {
@@ -190,8 +177,7 @@ int add_column(int** array,int rows,int columns)
 // ------------------------------------------
 // function make_extend_array
 // Example of how the memory trace is done
-// This function is intended to demonstrate how memory usage tracing of malloc and
-free is done
+// This function is intended to demonstrate how memory usage tracing of malloc and free is done
 void make_extend_array()
 {
    PUSH_TRACE("make_extend_array");
@@ -241,3 +227,8 @@ int main()
    POP_TRACE();
    return(0);
 }// end main
+
+
+
+
+
