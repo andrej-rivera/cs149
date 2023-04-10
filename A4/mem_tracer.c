@@ -8,8 +8,9 @@
  * TRACE_TOP is the head of the list is the top of the stack
 **/
 struct TRACE_NODE_STRUCT {
-   char* functionid; 			// ptr to function identifier (a function name)
+   char* functionid; 			// ptr to line
    struct TRACE_NODE_STRUCT* next; 	// ptr to next frama
+   int index;
 };
 typedef struct TRACE_NODE_STRUCT TRACE_NODE;
 static TRACE_NODE* TRACE_TOP = NULL; 		// ptr to the top of the stack
@@ -34,7 +35,6 @@ void PUSH_TRACE(char* p) 	// push p on the stack
       // initialize the stack with "global" identifier
       TRACE_TOP=(TRACE_NODE*) malloc(sizeof(TRACE_NODE));
       // no recovery needed if allocation failed, this is only
-
       // used in debugging, not in production
       if (TRACE_TOP==NULL) {
          printf("PUSH_TRACE: memory allocation error\n");
@@ -192,6 +192,45 @@ int add_row(int** array,int rows,int columns) {
    return (rows + 1);
 }// end add_row
 
+//adds nodes to linked list
+void add_node(TRACE_NODE* head, char* line, int index) {
+   
+   PUSH_TRACE("add_node");
+   
+   //create the node
+   TRACE_NODE* tnode = (TRACE_NODE*)malloc(sizeof(TRACE_NODE));
+   
+   //initialize the node
+   tnode->functionid = line;
+   tnode->index = index;
+   tnode->next = NULL;
+   
+   //set node to head if empty
+   if(TRACE_TOP == NULL) {
+      TRACE_TOP = tnode;
+   } else { //else add node to end of linked list
+      TRACE_NODE* current = TRACE_TOP;
+      while(current->next != NULL) {
+         current = current->next;
+      }
+      current->next = tnode;
+   }
+   return;
+}//end add_node
+
+//prints nodes from linked list
+void print_nodes(TRACE_NODE* head) {
+   
+   PUSH_TRACE("print_nodes");
+   
+   TRACE_NODE* current = head;
+   printf("%d %s", current->index, current->functionid);
+   while(current != NULL){
+      print_nodes(current->next);
+   }
+   return;
+}//end print_nodes
+
 // ------------------------------------------
 // function make_extend_array
 // Example of how the memory trace is done
@@ -234,13 +273,37 @@ void make_extend_array()
 }//end make_extend_array
 
 
+void make_extend_array2() {
+   
+   PUSH_TRACE("make_extend_array2");
+   
+   char** array = NULL;
+   
+   //do something w array??
+   
+   //reading from stdin
+   int i = 0;
+   while (fgets(array[i], 100, stdin) != NULL) {
+      if (array[i][strlen(array[i]) - 1] == '\n') {
+         array[i][strlen(array[i]) - 1] = 0; /* replace newline with null */
+      }
+      i++;
+      
+      //do something to store all the lines in the array
+      
+   }
+   
+   
+}
+
+
 // ----------------------------------------------
 // function main
 int main()
 {
    PUSH_TRACE("main");
 
-   make_extend_array();
+   make_extend_array2();
 
    POP_TRACE();
    return(0);
