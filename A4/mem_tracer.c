@@ -175,6 +175,23 @@ int add_column(int** array,int rows,int columns)
 }// end add_column
 
 
+// -----------------------------------------
+// function add_row will add an extra row to a 2d array of ints.
+// This function is intended to demonstrate how memory usage tracing of realloc is done
+// Returns the number of new rows (updated)
+int add_row(int** array,int rows,int columns) {
+   PUSH_TRACE("add_row");
+   int i;
+
+   for(i=0; i < columns; i++) {
+      array[i] = (int*) realloc(array[i], sizeof(int) * (rows + 1));
+      array[i][rows]=10 * i + rows;
+   }//for
+   
+   POP_TRACE();
+   return (rows + 1);
+}// end add_row
+
 // ------------------------------------------
 // function make_extend_array
 // Example of how the memory trace is done
