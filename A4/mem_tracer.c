@@ -10,10 +10,18 @@
 struct TRACE_NODE_STRUCT {
    char* functionid; 			// ptr to line
    struct TRACE_NODE_STRUCT* next; 	// ptr to next frama
-   int index;
+   //int index;
 };
 typedef struct TRACE_NODE_STRUCT TRACE_NODE;
 static TRACE_NODE* TRACE_TOP = NULL; 		// ptr to the top of the stack
+
+//linked list to store command line commands
+struct LINKED_LIST_STRUCT {
+   char* input;
+   struct LINKED_LIST_STRUCT* next;
+   int index;
+};
+typedef struct LINKED_LIST_STRUCT LINKED_LIST;
 
 
 /* --------------------------------*/
@@ -192,24 +200,39 @@ int add_row(int** array,int rows,int columns) {
    return (rows + 1);
 }// end add_row
 
-//adds nodes to linked list
-void add_node(TRACE_NODE* head, char* line, int index) {
+//creates linked list node
+LINKED_LIST* create_node(char* line, int index) {
    
    PUSH_TRACE("add_node");
    
    //create the node
-   TRACE_NODE* tnode = (TRACE_NODE*)malloc(sizeof(TRACE_NODE));
+   LINKED_LIST* tnode = (LINKED_LIST*)malloc(sizeof(LINKED_LIST));
    
    //initialize the node
-   tnode->functionid = line;
+   tnode->input = line;
    tnode->index = index;
    tnode->next = NULL;
+   return tnode;
+}//end create_node
+
+//adds nodes to linked list
+void add_node(LINKED_LIST* head, char* line, int index) {
+   
+   //PUSH_TRACE("add_node");
+   
+   //create the node
+   LINKED_LIST* tnode = create_node(line, index);
+   
+   //initialize the node
+   //tnode->input = line;
+   //tnode->index = index;
+   //tnode->next = NULL;
    
    //set node to head if empty
-   if(TRACE_TOP == NULL) {
-      TRACE_TOP = tnode;
+   LINKED_LIST* current = head;
+   if(current == NULL) {
+      head = tnode;
    } else { //else add node to end of linked list
-      TRACE_NODE* current = TRACE_TOP;
       while(current->next != NULL) {
          current = current->next;
       }
@@ -219,12 +242,12 @@ void add_node(TRACE_NODE* head, char* line, int index) {
 }//end add_node
 
 //prints nodes from linked list
-void print_nodes(TRACE_NODE* head) {
+void print_nodes(LINKED_LIST* head) {
    
-   PUSH_TRACE("print_nodes");
+   //PUSH_TRACE("print_nodes");
    
-   TRACE_NODE* current = head;
-   printf("%d %s", current->index, current->functionid);
+   LINKED_LIST* current = head;
+   printf("%d %s", current->index, current->input);
    while(current != NULL){
       print_nodes(current->next);
    }
@@ -277,22 +300,43 @@ void make_extend_array2() {
    
    PUSH_TRACE("make_extend_array2");
    
-   char** array = NULL;
+   //char** array = NULL;
    
    //do something w array??
+   //LINKED_LIST* nodes = (LINKED_LIST*)malloc(sizeof(LINKED_LIST));
+   
+   //initializing array of char pointers
+   int lines = 10;
+   char** inputs = (char**)malloc(sizeof(char*) *lines);
+   LINKED_LIST* head = NULL;
    
    //reading from stdin
    int i = 0;
-   while (fgets(array[i], 100, stdin) != NULL) {
-      if (array[i][strlen(array[i]) - 1] == '\n') {
-         array[i][strlen(array[i]) - 1] = 0; /* replace newline with null */
+   char buf[100];
+   while (fgets(buf, 100, stdin) != NULL) {
+      if (buf[lines - 1] == '\n') {
+         buf[lines - 1] = '\0'; /* replace newline with null */
       }
+      
+      //do something to store all the lines in the array and linked list
+      char* in = (char*)malloc(sizeof(char) *(lines+1));
+      strncpy(in, buf, lines+1);
+      add_node(head, in, i);
+      inputs[i] = in;
+      
+      if(i >= lines){
+         lines *= 2;
+         inputs = realloc(inputs, sizeof(char*) * lines);
+      }
+      
       i++;
-      
-      //do something to store all the lines in the array
-      
    }
    
+   //store inputs in linked list
+   //create_node();
+   
+   
+   print_nodes(head);
    
 }
 
