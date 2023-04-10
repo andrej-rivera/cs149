@@ -58,7 +58,6 @@ void PUSH_TRACE(char* p) 	// push p on the stack
    tnode->functionid=p;
    tnode->next = TRACE_TOP; // insert fnode as the first in the list
    TRACE_TOP=tnode; // point TRACE_TOP to the first node
-
 }/*end PUSH_TRACE*/
 
 
@@ -95,7 +94,6 @@ char* PRINT_TRACE()
    /* peek at the depth(50) top entries on the stack, but do not
       go over 100 chars and do not go over the bottom of the
       stack */
-
    sprintf(buf,"%s",TRACE_TOP->functionid);
    length = strlen(buf); // length of the string so far
    for(i=1, tnode=TRACE_TOP->next; tnode!=NULL && i < depth; i++,tnode=tnode->next) {
@@ -105,9 +103,9 @@ char* PRINT_TRACE()
          length += j+1;
       }else 			// it would be too long
          break;
-      }
-      return buf;
-   } /*end PRINT_TRACE*/
+   }
+   return buf;
+} /*end PRINT_TRACE*/
 
 
 // -----------------------------------------
@@ -120,6 +118,7 @@ char* PRINT_TRACE()
 void* REALLOC(void* p,int t,char* file,int line)
 {
    p = realloc(p,t);
+   printf("File %s, line %d, function %s reallocated the memory segment at address %p to a new size %d", file, line, PRINT_TRACE(), p, t);
    return p;
 }
 
@@ -135,6 +134,7 @@ void* MALLOC(int t,char* file,int line)
 {
    void* p;
    p = malloc(t);
+   printf("File %s, line %d, function %s allocated new memory segment at address %p to size %d", file, line, PRINT_TRACE(), p, t);
    return p;
 }
 
@@ -149,6 +149,7 @@ void* MALLOC(int t,char* file,int line)
 void FREE(void* p,char* file,int line)
 {
    free(p);
+   printf("File %s, line %d, function %s deallocated the memory segment at address %p", file, line, PRINT_TRACE(), p);
 }
 
 #define realloc(a,b) REALLOC(a,b,__FILE__,__LINE__)
