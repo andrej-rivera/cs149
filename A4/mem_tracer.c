@@ -1,7 +1,14 @@
-/*
-    https://www.log2base2.com/data-structures/linked-list/inserting-a-node-at-the-end-of-a-linked-list.html
-    https://stackoverflow.com/questions/27594992/uninitialized-value-was-created-by-a-heap-allocation
-*/
+/**
+ * Assignment 4 - mem tracer
+ * Description: This program stores command lines in an array and traces memory
+ * Author name: Andre Rivera, Tanisha Damle
+ * Author email: andre.rivera@sjsu.edu; tanisha.damle@sjsu.edu
+ * Last modified date: April 11, 2023
+ * Creation date: April 8, 2023
+ * References: 
+ * - https://www.log2base2.com/data-structures/linked-list/inserting-a-node-at-the-end-of-a-linked-list.html
+ * - https://stackoverflow.com/questions/27594992/uninitialized-value-was-created-by-a-heap-allocation
+ **/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,7 +28,9 @@ struct TRACE_NODE_STRUCT {
 typedef struct TRACE_NODE_STRUCT TRACE_NODE;
 static TRACE_NODE* TRACE_TOP = NULL; 		// ptr to the top of the stack
 
-//linked list to store command line commands
+/**
+ * LINKED_LIST_STRUCT is a linked list of pointers to command line commands
+**/
 struct LINKED_LIST_STRUCT {
    char* input;
    struct LINKED_LIST_STRUCT* next;
@@ -173,7 +182,6 @@ void FREE(void* p,char* file,int line)
 
 
 // -----------------------------------------
-
 //adds nodes to linked list given the head node of the list, a string, and an index
 void add_node(LINKED_LIST** head, char* line, int index) {
    
@@ -187,6 +195,7 @@ void add_node(LINKED_LIST** head, char* line, int index) {
    tnode->index = index;
    tnode->next = NULL;
    
+   //loop through linked list to see where to put tnode
    LINKED_LIST* current = *head;
    if(current == NULL) {  //if head is empty, set the new node to that
       *head = tnode;
@@ -196,35 +205,42 @@ void add_node(LINKED_LIST** head, char* line, int index) {
       }
       current->next = tnode;
    }
+   
    POP_TRACE();
    return;
 }//end add_node
 
+// ----------------------------------------------
 //prints nodes from linked list (recursively)
 void print_nodes(LINKED_LIST* head) {
    
    PUSH_TRACE("print_nodes");
    
+   //sets the current node to the head
    LINKED_LIST* current = head;
 
+   //loop to find the tail node to stop recursion
    while(current != NULL){
          printf("%d %s", current->index, current->input);
          current = current->next;
    }
+   
    POP_TRACE();
    return;
 }//end print_nodes
 
 // ------------------------------------------
-void make_extend_array2() {
+// allocates, reallocates, and frees memory used from the commands stored in the linked list
+void make_extend_array() {
    
-   PUSH_TRACE("make_extend_array2");
-   
+   PUSH_TRACE("make_extend_array");
    
    //initializing array of char pointers
    int lines = 10;
-   char** inputs = (char**)malloc(sizeof(char*) * lines); //2d string array (dynamic)
-   LINKED_LIST* head = NULL; //head of linked list
+   //2d string array (dynamic)
+   char** inputs = (char**)malloc(sizeof(char*) * lines); 
+   //head of linked list
+   LINKED_LIST* head = NULL; 
    
    //reading from stdin
    int i = 0;
@@ -250,8 +266,8 @@ void make_extend_array2() {
    
    print_nodes(head);
    
+   //free memory
    free(inputs);
-   
    LINKED_LIST* current = head;
    while (current != NULL) {
       LINKED_LIST* temp = current;
@@ -259,7 +275,6 @@ void make_extend_array2() {
       free(temp->input);
       free(temp);
    }
-   
 
    POP_TRACE();
    return;
@@ -273,15 +288,15 @@ int main()
    PUSH_TRACE("main");
    
    // Redirect stdout to memtrace.out file
-    FILE *fp = fopen("memtrace.out", "w");
-    if (fp == NULL) {
-        printf("Error opening file\n");
-        return 1;
-    }
-    dup2(fileno(fp), STDOUT_FILENO);
-    setbuf(stdout, NULL);
+   FILE *fp = fopen("memtrace.out", "w");
+   if (fp == NULL) {
+      printf("Error opening file\n");
+      return 1;
+   }
+   dup2(fileno(fp), STDOUT_FILENO);
+   setbuf(stdout, NULL);
 
-   make_extend_array2();
+   make_extend_array();
    
    fclose(fp);
    
