@@ -1,3 +1,7 @@
+/*
+    https://www.log2base2.com/data-structures/linked-list/inserting-a-node-at-the-end-of-a-linked-list.html
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -201,8 +205,8 @@ int add_row(int** array,int rows,int columns) {
    return (rows + 1);
 }// end add_row
 
-//creates linked list node
-LINKED_LIST* create_node(char* line, int index) {
+//adds nodes to linked list given the head node of the list, a string, and an index
+void add_node(LINKED_LIST** head, char* line, int index) {
    
    PUSH_TRACE("add_node");
    
@@ -212,33 +216,15 @@ LINKED_LIST* create_node(char* line, int index) {
    //initialize the node
    tnode->input = line;
    tnode->index = index;
-   tnode->next = NULL;
-   POP_TRACE();
-   return tnode;
-}//end create_node
-
-//adds nodes to linked list
-void add_node(LINKED_LIST* head, char* line, int index) {
    
-   PUSH_TRACE("add_node");
-   
-   //create the node
-   LINKED_LIST* tnode = create_node(line, index);
-   
-   //initialize the node
-   //tnode->input = line;
-   //tnode->index = index;
-   //tnode->next = NULL;
-   
-   //set node to head if empty
-   LINKED_LIST** current = head;
-   if((*current) == NULL) {
-      (*head) = tnode;
+   LINKED_LIST* current = *head;
+   if(current == NULL) {  //if head is empty, set the new node to that
+      *head = tnode;
    } else { //else add node to end of linked list
-      while((*current)->next != NULL) {
-         (*current) = (*current)->next;
+      while(current->next != NULL) { //loop to traverse list
+         current = current->next;
       }
-      (*current)->next = tnode;
+      current->next = tnode;
    }
    POP_TRACE();
    return;
@@ -250,7 +236,6 @@ void print_nodes(LINKED_LIST* head) {
    PUSH_TRACE("print_nodes");
    
    LINKED_LIST* current = head;
-   
 
    while(current != NULL){
          printf("%d %s", current->index, current->input);
@@ -292,7 +277,7 @@ void make_extend_array()
    for(i=0; i<ROW; i++)
       for(j=0; j<NEWCOL; j++)
          printf("array[%d][%d]=%d\n",i,j,array[i][j]);
-INKED_LIST* 
+
    //now deallocate it
    for(i=0; i<ROW; i++)
       free((void*)array[i]);
@@ -325,6 +310,7 @@ void make_extend_array2() {
       }
       
       //do something to store all the lines in the array and linked list
+
       if(i >= lines){
          lines *= 2;
          inputs = realloc(inputs, sizeof(char*) * lines);
