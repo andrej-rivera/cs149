@@ -1,5 +1,6 @@
 /*
     https://www.log2base2.com/data-structures/linked-list/inserting-a-node-at-the-end-of-a-linked-list.html
+    https://stackoverflow.com/questions/27594992/uninitialized-value-was-created-by-a-heap-allocation
 */
 
 #include <stdio.h>
@@ -184,6 +185,7 @@ void add_node(LINKED_LIST** head, char* line, int index) {
    //initialize the node
    tnode->input = line;
    tnode->index = index;
+   tnode->next = NULL;
    
    LINKED_LIST* current = *head;
    if(current == NULL) {  //if head is empty, set the new node to that
@@ -198,7 +200,7 @@ void add_node(LINKED_LIST** head, char* line, int index) {
    return;
 }//end add_node
 
-//prints nodes from linked list
+//prints nodes from linked list (recursively)
 void print_nodes(LINKED_LIST* head) {
    
    PUSH_TRACE("print_nodes");
