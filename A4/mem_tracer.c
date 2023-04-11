@@ -71,6 +71,7 @@ void PUSH_TRACE(char* p) 	// push p on the stack
    tnode->functionid=p;
    tnode->next = TRACE_TOP; // insert fnode as the first in the list
    TRACE_TOP=tnode; // point TRACE_TOP to the first node
+   
 }/*end PUSH_TRACE*/
 
 
@@ -227,23 +228,21 @@ void make_extend_array2() {
    int i = 0;
    char buf[100];
    while (fgets(buf, 100, stdin) != NULL) {
-      if (buf[lines - 1] == '\n') {
-         buf[lines - 1] = '\0'; /* replace newline with null */
+      
+      if (buf[strlen(buf)] == '\n') {
+         buf[strlen(buf)] = '\0'; /* replace newline with null */
       }
       
-      //do something to store all the lines in the array and linked list
-
-      if(i >= lines){
-         lines *= 2;
+      //reallocate array
+      if(i >= lines - 1){
+         lines += 10;
          inputs = realloc(inputs, sizeof(char*) * lines);
       }
       
+      inputs[i] = NULL;
       inputs[i] = (char*)malloc(100);
       strcpy(inputs[i], buf);
       add_node(&head, inputs[i], i);
-
-
-      
       i++;
    }
    
@@ -259,6 +258,7 @@ void make_extend_array2() {
       free(temp);
    }
    
+
    POP_TRACE();
    return;
 }
@@ -284,7 +284,8 @@ int main()
    fclose(fp);
    
    POP_TRACE();
-
+   POP_TRACE();
+   
    return(0);
 }// end main
 
