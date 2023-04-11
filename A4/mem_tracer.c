@@ -171,39 +171,6 @@ void FREE(void* p,char* file,int line)
 
 
 // -----------------------------------------
-// function add_column will add an extra column to a 2d array of ints.
-// This function is intended to demonstrate how memory usage tracing of realloc is done
-// Returns the number of new columns (updated)
-int add_column(int** array,int rows,int columns)
-{
-   PUSH_TRACE("add_column");
-   int i;
-
-   for(i=0; i<rows; i++) {
-      array[i]=(int*) realloc(array[i],sizeof(int)*(columns+1));
-      array[i][columns]=10*i+columns;
-   }//for
-   POP_TRACE();
-      return (columns+1);
-}// end add_column
-
-
-// -----------------------------------------
-// function add_row will add an extra row to a 2d array of ints.
-// This function is intended to demonstrate how memory usage tracing of realloc is done
-// Returns the number of new rows (updated)
-int add_row(int** array,int rows,int columns) {
-   PUSH_TRACE("add_row");
-   int i;
-
-   for(i=0; i < columns; i++) {
-      array[i] = (int*) realloc(array[i], sizeof(int) * (rows + 1));
-      array[i][rows]=10 * i + rows;
-   }//for
-   
-   POP_TRACE();
-   return (rows + 1);
-}// end add_row
 
 //adds nodes to linked list given the head node of the list, a string, and an index
 void add_node(LINKED_LIST** head, char* line, int index) {
@@ -246,60 +213,15 @@ void print_nodes(LINKED_LIST* head) {
 }//end print_nodes
 
 // ------------------------------------------
-// function make_extend_array
-// Example of how the memory trace is done
-// This function is intended to demonstrate how memory usage tracing of malloc and free is done
-void make_extend_array()
-{
-   PUSH_TRACE("make_extend_array");
-   int i, j;
-   int **array;
-   int ROW = 4;
-   int COL = 3;
-
-   //make array
-   array = (int**) malloc(sizeof(int*)*4); // 4 rows
-   for(i=0; i<ROW; i++) {
-      array[i]=(int*) malloc(sizeof(int)*3); // 3 columns
-      for(j=0; j<COL; j++)
-         array[i][j]=10*i+j;
-   }//for
-
-   //display array
-   for(i=0; i<ROW; i++)
-      for(j=0; j<COL; j++)
-         printf("array[%d][%d]=%d\n",i,j,array[i][j]);
-
-   // and a new column
-   int NEWCOL = add_column(array,ROW,COL);
-
-   // now display the array again
-   for(i=0; i<ROW; i++)
-      for(j=0; j<NEWCOL; j++)
-         printf("array[%d][%d]=%d\n",i,j,array[i][j]);
-
-   //now deallocate it
-   for(i=0; i<ROW; i++)
-      free((void*)array[i]);
-   free((void*)array);
-   POP_TRACE();
-   return;
-}//end make_extend_array
-
-
 void make_extend_array2() {
    
    PUSH_TRACE("make_extend_array2");
    
-   //char** array = NULL;
-   
-   //do something w array??
-   //LINKED_LIST* nodes = (LINKED_LIST*)malloc(sizeof(LINKED_LIST));
    
    //initializing array of char pointers
    int lines = 10;
-   char** inputs = (char**)malloc(sizeof(char*) *lines);
-   LINKED_LIST* head = NULL;
+   char** inputs = (char**)malloc(sizeof(char*) * lines); //2d string array (dynamic)
+   LINKED_LIST* head = NULL; //head of linked list
    
    //reading from stdin
    int i = 0;
@@ -316,22 +238,19 @@ void make_extend_array2() {
          inputs = realloc(inputs, sizeof(char*) * lines);
       }
       
-      char* in = (char*)malloc(sizeof(char) *(lines+1));
-      strcpy(in, buf);
-      add_node(&head, in, i);
-      inputs[i] = in;
+      inputs[i] = (char*)malloc(100);
+      strcpy(inputs[i], buf);
+      add_node(&head, inputs[i], i);
+
 
       
       i++;
    }
-   print_nodes(head);
-
-
    
-   //store inputs in linked list
-   //create_node();
+   print_nodes(head);
    
    free(inputs);
+   
    LINKED_LIST* current = head;
    while (current != NULL) {
       LINKED_LIST* temp = current;
@@ -340,9 +259,8 @@ void make_extend_array2() {
       free(temp);
    }
    
-   
-   //print_nodes(head);
-   
+   POP_TRACE();
+   return;
 }
 
 
@@ -362,8 +280,11 @@ int main()
     setbuf(stdout, NULL);
 
    make_extend_array2();
-
+   
+   fclose(fp);
+   
    POP_TRACE();
+
    return(0);
 }// end main
 
