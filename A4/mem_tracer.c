@@ -213,13 +213,14 @@ LINKED_LIST* create_node(char* line, int index) {
    tnode->input = line;
    tnode->index = index;
    tnode->next = NULL;
+   POP_TRACE();
    return tnode;
 }//end create_node
 
 //adds nodes to linked list
-void add_node(LINKED_LIST* head, char* line, int index) {
+void add_node(LINKED_LIST** current, char* line, int index) {
    
-   //PUSH_TRACE("add_node");
+   PUSH_TRACE("add_node");
    
    //create the node
    LINKED_LIST* tnode = create_node(line, index);
@@ -230,28 +231,30 @@ void add_node(LINKED_LIST* head, char* line, int index) {
    //tnode->next = NULL;
    
    //set node to head if empty
-   LINKED_LIST* current = head;
-   if(current == NULL) {
-      head = tnode;
+   //LINKED_LIST* current = head;
+   if((*current) == NULL) {
+      (*head) = tnode;
    } else { //else add node to end of linked list
-      while(current->next != NULL) {
-         current = current->next;
+      while((*current)->next != NULL) {
+         (*current) = (*current)->next;
       }
-      current->next = tnode;
+      (*current)->next = tnode;
    }
+   POP_TRACE();
    return;
 }//end add_node
 
 //prints nodes from linked list
-void print_nodes(LINKED_LIST* head) {
+void print_nodes(LINKED_LIST** head) {
    
    //PUSH_TRACE("print_nodes");
    
    LINKED_LIST* current = head;
    printf("%d %s", current->index, current->input);
    while(current != NULL){
-      print_nodes(current->next);
+      print_nodes(current)->next);
    }
+   POP_TRACE();
    return;
 }//end print_nodes
 
@@ -321,7 +324,7 @@ void make_extend_array2() {
       
       //do something to store all the lines in the array and linked list
       char* in = (char*)malloc(sizeof(char) *(lines+1));
-      strncpy(in, buf, lines+1);
+      strcpy(in, buf);
       add_node(head, in, i);
       inputs[i] = in;
       
@@ -332,21 +335,23 @@ void make_extend_array2() {
       
       i++;
    }
+
+   print_nodes(head);
    
    //store inputs in linked list
    //create_node();
    
-   FREE(inputs, "main", __LINE__);
+   free(inputs);
    LINKED_LIST* current = head;
    while (current != NULL) {
       LINKED_LIST* temp = current;
       current = current->next;
-      FREE(temp->input, "main", __LINE__);
-      FREE(temp, "main", __LINE__);
+      free(temp->input);
+      free(temp);
    }
    
    
-   print_nodes(head);
+   //print_nodes(head);
    
 }
 
