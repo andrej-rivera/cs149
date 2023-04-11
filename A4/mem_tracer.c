@@ -216,18 +216,18 @@ void add_node(LINKED_LIST** head, char* line, int index) {
 void print_nodes(LINKED_LIST* head) {
    
    PUSH_TRACE("print_nodes");
-   
+   printf("%d %s", head->index, head->input);
    //sets the current node to the head
-   LINKED_LIST* current = head;
+   //LINKED_LIST* current = head;
 
    //loop to find the tail node to stop recursion
-   while(current != NULL){
-         printf("%d %s", current->index, current->input);
-         current = current->next;
+   while(head->next == NULL){  
+      POP_TRACE();
+      return;
+       
    }
    
-   POP_TRACE();
-   return;
+   print_nodes(head->next);  
 }//end print_nodes
 
 // ------------------------------------------
@@ -265,6 +265,7 @@ void make_extend_array() {
       i++;
    }
    
+   //LINKED_LIST* curr = head;
    print_nodes(head);
    
    //free memory
