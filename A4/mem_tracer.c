@@ -218,7 +218,7 @@ LINKED_LIST* create_node(char* line, int index) {
 }//end create_node
 
 //adds nodes to linked list
-void add_node(LINKED_LIST** current, char* line, int index) {
+void add_node(LINKED_LIST* head, char* line, int index) {
    
    PUSH_TRACE("add_node");
    
@@ -231,7 +231,7 @@ void add_node(LINKED_LIST** current, char* line, int index) {
    //tnode->next = NULL;
    
    //set node to head if empty
-   //LINKED_LIST* current = head;
+   LINKED_LIST** current = head;
    if((*current) == NULL) {
       (*head) = tnode;
    } else { //else add node to end of linked list
@@ -245,14 +245,16 @@ void add_node(LINKED_LIST** current, char* line, int index) {
 }//end add_node
 
 //prints nodes from linked list
-void print_nodes(LINKED_LIST** head) {
+void print_nodes(LINKED_LIST* head) {
    
-   //PUSH_TRACE("print_nodes");
+   PUSH_TRACE("print_nodes");
    
    LINKED_LIST* current = head;
-   printf("%d %s", current->index, current->input);
+   
+
    while(current != NULL){
-      print_nodes(current)->next);
+         printf("%d %s", current->index, current->input);
+         current = current->next;
    }
    POP_TRACE();
    return;
@@ -290,7 +292,7 @@ void make_extend_array()
    for(i=0; i<ROW; i++)
       for(j=0; j<NEWCOL; j++)
          printf("array[%d][%d]=%d\n",i,j,array[i][j]);
-
+INKED_LIST* 
    //now deallocate it
    for(i=0; i<ROW; i++)
       free((void*)array[i]);
@@ -323,20 +325,22 @@ void make_extend_array2() {
       }
       
       //do something to store all the lines in the array and linked list
-      char* in = (char*)malloc(sizeof(char) *(lines+1));
-      strcpy(in, buf);
-      add_node(head, in, i);
-      inputs[i] = in;
-      
       if(i >= lines){
          lines *= 2;
          inputs = realloc(inputs, sizeof(char*) * lines);
       }
       
+      char* in = (char*)malloc(sizeof(char) *(lines+1));
+      strcpy(in, buf);
+      add_node(&head, in, i);
+      inputs[i] = in;
+
+      
       i++;
    }
-
    print_nodes(head);
+
+
    
    //store inputs in linked list
    //create_node();
