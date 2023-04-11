@@ -8,6 +8,7 @@
  * References: 
  * - https://www.log2base2.com/data-structures/linked-list/inserting-a-node-at-the-end-of-a-linked-list.html
  * - https://stackoverflow.com/questions/27594992/uninitialized-value-was-created-by-a-heap-allocation
+ * - https://www.sanfoundry.com/c-program-display-linked-list-using-recursion/ 
  **/
 
 #include <stdio.h>
