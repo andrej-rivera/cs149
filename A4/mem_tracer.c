@@ -273,7 +273,7 @@ void make_extend_array() {
       
       //add string to dynamic array
       inputs[i] = NULL;
-      inputs[i] = (char*)malloc(100);
+      inputs[i] = (char*)malloc(strlen(buf)+1);
       strcpy(inputs[i], buf);
       
       //add string to linked list & increment line index
