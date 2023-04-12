@@ -183,6 +183,7 @@ void FREE(void* p,char* file,int line)
 
 
 // -----------------------------------------
+
 //adds nodes to linked list given the head node of the list, a string, and an index
 void add_node(LINKED_LIST** head, char* line, int index) {
    
@@ -198,9 +199,9 @@ void add_node(LINKED_LIST** head, char* line, int index) {
    
    //loop through linked list to see where to put tnode
    LINKED_LIST* current = *head;
-   if(current == NULL) {  //if head is empty, set the new node to that
+   if(current == NULL) {  //if head is empty, set the new node to that (empty list edge case)
       *head = tnode;
-   } else { //else add node to end of linked list
+   } else { //else add node to end of linked list (base case)
       while(current->next != NULL) { //loop to traverse list
          current = current->next;
       }
@@ -213,9 +214,9 @@ void add_node(LINKED_LIST** head, char* line, int index) {
 
 // ----------------------------------------------
 //prints nodes from linked list (recursively)
-void print_nodes(LINKED_LIST* head) {
+void PrintNodes(LINKED_LIST* head) {
    
-   PUSH_TRACE("print_nodes");
+   PUSH_TRACE("PrintNodes");
    printf("%d %s", head->index, head->input);
    //sets the current node to the head
    //LINKED_LIST* current = head;
@@ -227,14 +228,27 @@ void print_nodes(LINKED_LIST* head) {
        
    }
    
-   print_nodes(head->next);  
-}//end print_nodes
+   PrintNodes(head->next);  
+}//end PrintNodes
 
 // ------------------------------------------
 // allocates, reallocates, and frees memory used from the commands stored in the linked list
 void make_extend_array() {
    
    PUSH_TRACE("make_extend_array");
+   
+   // Redirect stdout to memtrace.out file
+   FILE *fp = fopen("memtrace.out", "w");
+   if (fp == NULL) {
+      printf("Error opening file\n");
+      return;
+   }
+   
+   //save terminal stdout & redirect prints to memtrace file
+   int temp = dup(STDOUT_FILENO);
+   dup2(fileno(fp), STDOUT_FILENO);
+   setbuf(stdout, NULL);
+   
    
    //initializing array of char pointers
    int lines = 10;
@@ -248,6 +262,7 @@ void make_extend_array() {
    char buf[100];
    while (fgets(buf, 100, stdin) != NULL) {
       
+      //remove new line character from string
       if (buf[strlen(buf)] == '\n') {
          buf[strlen(buf)] = '\0'; /* replace newline with null */
       }
@@ -258,16 +273,22 @@ void make_extend_array() {
          inputs = realloc(inputs, sizeof(char*) * lines);
       }
       
+      //add string to dynamic array
       inputs[i] = NULL;
       inputs[i] = (char*)malloc(100);
       strcpy(inputs[i], buf);
+      
+      //add string to linked list & increment line index
       add_node(&head, inputs[i], i);
       i++;
    }
    
-   //LINKED_LIST* curr = head;
-   print_nodes(head);
-   
+   //restore stdout to terminal to print full linked list
+   dup2(temp, STDOUT_FILENO);
+   PrintNodes(head);
+   //redirect stdout back to memtrace.out for free function calls
+   dup2(fileno(fp), STDOUT_FILENO);
+    
    //free memory
    free(inputs);
    LINKED_LIST* current = head;
@@ -277,10 +298,14 @@ void make_extend_array() {
       free(temp->input);
       free(temp);
    }
-
+    
+   //restore stdout back to terminal for the final time
+   dup2(temp, STDOUT_FILENO); 
+   fclose(fp);
    POP_TRACE();
    return;
 }
+
 
 
 // ----------------------------------------------
@@ -289,19 +314,8 @@ int main()
 {
    PUSH_TRACE("main");
    
-   // Redirect stdout to memtrace.out file
-   FILE *fp = fopen("memtrace.out", "w");
-   if (fp == NULL) {
-      printf("Error opening file\n");
-      return 1;
-   }
-   dup2(fileno(fp), STDOUT_FILENO);
-   setbuf(stdout, NULL);
-
    make_extend_array();
-   
-   fclose(fp);
-   
+  
    POP_TRACE();
    POP_TRACE();
    
