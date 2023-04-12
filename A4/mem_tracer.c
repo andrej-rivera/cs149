@@ -218,17 +218,15 @@ void PrintNodes(LINKED_LIST* head) {
    
    PUSH_TRACE("PrintNodes");
    printf("%d %s", head->index, head->input);
-   //sets the current node to the head
-   //LINKED_LIST* current = head;
 
    //loop to find the tail node to stop recursion
-   while(head->next == NULL){  
+   if(head->next == NULL){  
       POP_TRACE();
       return;
-       
    }
    
    PrintNodes(head->next);  
+   POP_TRACE();
 }//end PrintNodes
 
 // ------------------------------------------
