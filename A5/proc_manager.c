@@ -6,9 +6,17 @@
 #include<unistd.h>
 #include<sys/types.h>
 #include<sys/wait.h>
+#include <time.h>
+
+
+    // HASH TABLE STUFF
+
 
 
 int main(int argc, char * argv[]) {
+    
+    // PROC MANAGER STUFF
+
 
 
    //initializing array of char pointers
