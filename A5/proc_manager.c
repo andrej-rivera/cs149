@@ -9,9 +9,97 @@
 #include <time.h>
 
 
-    // HASH TABLE STUFF
+// HASH TABLE STUFF
+struct nlist //DONE
+{                       /* table entry: */
+    struct nlist *next; /* next entry in chain */
+    char *command;         // command
+    double startTime; // time the command started
+    double finishTime; // time the command ended
+    int index; // line index inside input text file
+    int pid; // pid of process (identifier), can use pid result of wait for lookup 
+};
+
+#define HASHSIZE 101
+static struct nlist *hashtab[HASHSIZE]; /* pointer table */
 
 
+/* This is the hash function: form hash value for string s */
+/* TODO change to: unsigned hash(int pid) */
+/* TODO modify to hash by pid. */
+/* You can use a simple hash function: pid % HASHSIZE */
+unsigned hash(int pid) //DONE
+{
+    unsigned hashval = pid % HASHSIZE;
+    return hashval;
+}
+
+
+/* lookup: look for s in hashtab */
+/* TODO change to lookup by pid: struct nlist *lookup(int pid) */
+/* TODO modify to search by pid, you won't need strcmp anymore */
+/* This is traversing the linked list under a slot of the hash
+table. The array position to look in is returned by the hash
+function */
+struct nlist *lookup(int pid) //DONE
+{
+    struct nlist *np;
+    for (np = hashtab[hash(pid)]; np != NULL; np = np->next)
+        if (np->pid == pid)
+            return np; /* found */
+    return NULL;       /* not found */
+
+}
+
+
+/* insert: put (name, defn) in hashtab */
+/* TODO: change this to insert in hash table the info for a new
+pid and its command */
+/* TODO: change signature to: struct nlist *insert(char *command,
+int pid, int index). */
+/* This insert returns a nlist node. Thus whtableen you call insert in
+your main function */
+/* you will save the returned nlist node in a variable (mynode).
+    */
+/* Then you can set the starttime and finishtime from your main
+function: */
+/* mynode->starttime = starttime; mynode->finishtime = finishtime;
+    */
+struct nlist *insert(char *command, int pid, int index) //DONE-ish? (possibly work on this more later)
+{
+    struct nlist *np;
+    unsigned hashval;
+    // TODO change to lookup by pid. There are 2 cases:
+
+    /* case 1: the pid is not
+    found, so you have to create it with malloc. Then you want to set
+    the pid, command and index */
+    if ((np = lookup(pid)) == NULL)
+    { 
+        np = (struct nlist *)malloc(sizeof(*np));
+        if (np == NULL) //checks if malloc worked
+            return NULL;
+        np->pid = pid; //sets pid of entry, returns null if error occurs
+        hashval = hash(pid); 
+        if ((np->command = strdup(command)) == NULL) //sets command of entry, returns null if error occurs
+            return NULL;
+
+
+        np->next = hashtab[hashval];
+        hashtab[hashval] = np;
+    }
+
+    /* case 2: the pid is already there in the
+    hashslot, i.e. lookup found the pid. In this case you can either
+    do nothing, or you may want to set again the command and index
+    (depends on your implementation). */
+    else
+    {
+    } 
+
+    // free((void *) np->defn); /*free previous defn */
+    return np;
+}
 
 int main(int argc, char * argv[]) {
     
