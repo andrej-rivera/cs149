@@ -1,3 +1,6 @@
+/*
+ - https://linux.die.net/man/3/clock_gettime
+*/
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -14,10 +17,10 @@ struct nlist //DONE
 {                       /* table entry: */
     struct nlist *next; /* next entry in chain */
     char *command;         // command
-    double startTime; // time the command started
-    double finishTime; // time the command ended
+    struct timespec startTime; // time the command started
+    struct timespec endTime; // time the command ended
     int index; // line index inside input text file
-    int pid; // pid of process (identifier), can use pid result of wait for lookup 
+    pid_t pid; // pid of process (identifier), can use pid result of wait for lookup 
 };
 
 #define HASHSIZE 101
@@ -28,7 +31,7 @@ static struct nlist *hashtab[HASHSIZE]; /* pointer table */
 /* TODO change to: unsigned hash(int pid) */
 /* TODO modify to hash by pid. */
 /* You can use a simple hash function: pid % HASHSIZE */
-unsigned hash(int pid) //DONE
+unsigned hash(pid_t pid) //DONE
 {
     unsigned hashval = pid % HASHSIZE;
     return hashval;
@@ -41,7 +44,7 @@ unsigned hash(int pid) //DONE
 /* This is traversing the linked list under a slot of the hash
 table. The array position to look in is returned by the hash
 function */
-struct nlist *lookup(int pid) //DONE
+struct nlist *lookup(pid_t pid) //DONE
 {
     struct nlist *np;
     for (np = hashtab[hash(pid)]; np != NULL; np = np->next)
@@ -65,7 +68,7 @@ your main function */
 function: */
 /* mynode->starttime = starttime; mynode->finishtime = finishtime;
     */
-struct nlist *insert(char *command, int pid, int index) //DONE-ish? (possibly work on this more later)
+struct nlist *insert(char *command, pid_t pid, int index) //DONE-ish? (possibly work on this more later)
 {
     struct nlist *np;
     unsigned hashval;
@@ -79,11 +82,11 @@ struct nlist *insert(char *command, int pid, int index) //DONE-ish? (possibly wo
         np = (struct nlist *)malloc(sizeof(*np));
         if (np == NULL) //checks if malloc worked
             return NULL;
-        np->pid = pid; //sets pid of entry, returns null if error occurs
+        np->pid = pid; //sets pid of entry
+        np->index = index; //sets index of entry
         hashval = hash(pid); 
         if ((np->command = strdup(command)) == NULL) //sets command of entry, returns null if error occurs
             return NULL;
-
 
         np->next = hashtab[hashval];
         hashtab[hashval] = np;
@@ -102,10 +105,6 @@ struct nlist *insert(char *command, int pid, int index) //DONE-ish? (possibly wo
 }
 
 int main(int argc, char * argv[]) {
-    
-    // PROC MANAGER STUFF
-
-
 
    //initializing array of char pointers
    int lines = 10;
@@ -121,9 +120,7 @@ int main(int argc, char * argv[]) {
       if (buf[strlen(buf) - 1] == '\n') {
          buf[strlen(buf) - 1] = '\0'; /* replace newline with null */
       }
-      
 
-      
       //reallocate array
       if(i >= lines - 1){
          lines += 10;
@@ -166,9 +163,12 @@ int main(int argc, char * argv[]) {
             dup2(fdout, 1);
             dup2(fderr, 2);
 
+            //set timer
+            struct nlist *node = insert(inputs[j], getpid(), j); // insert cmd into hashtable
+            clock_gettime(CLOCK_MONOTONIC, &node->startTime);
+
             // Write logs & Execute
             fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", j + 1, getpid(), getppid());
-
 
 
             execvp(args[0], args);
@@ -196,7 +196,13 @@ int main(int argc, char * argv[]) {
         dup2(fdout, 1);
         dup2(fderr, 2);
 
+        // Calculate duration of node using stored values
+        struct nlist *node = lookup(pid);
+        clock_gettime(CLOCK_MONOTONIC, &node->endTime);
+        double duration = (node->endTime.tv_nsec - node->startTime.tv_nsec);
+
         fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
+        fprintf(stdout, "Finished at %ld, runtime duration %f\n", node->endTime.tv_nsec, duration);
 
         // Final print statements to .err file
         if (WIFSIGNALED(status)) { // if killed forcefully by signal
