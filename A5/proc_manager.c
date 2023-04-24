@@ -220,7 +220,7 @@ int main(int argc, char * argv[]) {
             
             //fork child
             pid = fork();
-            
+            int argIndex = 1;
             //if error forking
             if(pid < 0){
                fprintf(stderr, "Fork Failed\n");
@@ -230,10 +230,10 @@ int main(int argc, char * argv[]) {
             else if(pid == 0) {//child process
                // Grab command & arg
                char * args[30];
-               char * temp = strdup(inputs[j]); // temp string so that inputs[j] is not affected
+               //char * temp = node->command; // temp string so that inputs[j] is not affected
 
-               args[0] = strtok(temp, " ");
-               int argIndex = 1;
+               args[0] = strtok(buf, " ");
+               
                while ((args[argIndex] = strtok(NULL, " ")) != NULL) {
                    argIndex++;
                }
@@ -246,15 +246,19 @@ int main(int argc, char * argv[]) {
                int fderr = open(strcat(filename, ".err"), O_RDWR | O_CREAT | O_APPEND, 0777);
                dup2(fdout, 1);
                dup2(fderr, 2);
+               
+               //write restarting to files
+               fprintf(stdout, "RESTARTING\n");
+               fprintf(stderr, "RESTARTING\n");
 
                // Write logs & Execute
-               fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", j + 1, getpid(), getppid());
+               fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", argIndex, getpid(), getppid());
 
 
                execvp(args[0], args);
 
                // this part runs if an error is encountered
-               fprintf(stderr, "Error running command (invalid): \"%s\"\n", inputs[j]);
+               fprintf(stderr, "Error running command (invalid): \"%s\"\n", buf);
                close(fdout);
                close(fderr);
 
@@ -264,7 +268,7 @@ int main(int argc, char * argv[]) {
             
             else if(pid > 0) { // parent
                // add to hash table
-               struct nlist *node = insert(inputs[j], pid, j); // insert command into hashtable
+               struct nlist *node = insert(buf, pid, argIndex); // insert command into hashtable
                clock_gettime(CLOCK_MONOTONIC, &node->startTime);
                
             }
