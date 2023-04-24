@@ -214,6 +214,60 @@ int main(int argc, char * argv[]) {
         if(duration > 2) //if duration > 2, restart process
         {
             //TODO: re-execute process thru forking
+            
+            //get the start time
+            clock_gettime(CLOCK_MONOTONIC, &node->startTime);
+            
+            //fork child
+            pid = fork();
+            
+            //if error forking
+            if(pid < 0){
+               fprintf(stderr, "Fork Failed\n");
+               return 1;
+            }
+            
+            else if(pid == 0) {//child process
+               // Grab command & arg
+               char * args[30];
+               char * temp = strdup(inputs[j]); // temp string so that inputs[j] is not affected
+
+               args[0] = strtok(temp, " ");
+               int argIndex = 1;
+               while ((args[argIndex] = strtok(NULL, " ")) != NULL) {
+                   argIndex++;
+               }
+
+               // Create output files & set new stdout, stderr
+               char filename[30];
+               sprintf(filename, "%d", getpid());
+               int fdout = open(strcat(filename, ".out"), O_RDWR | O_CREAT | O_APPEND, 0777);
+               sprintf(filename, "%d", getpid());
+               int fderr = open(strcat(filename, ".err"), O_RDWR | O_CREAT | O_APPEND, 0777);
+               dup2(fdout, 1);
+               dup2(fderr, 2);
+
+               // Write logs & Execute
+               fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", j + 1, getpid(), getppid());
+
+
+               execvp(args[0], args);
+
+               // this part runs if an error is encountered
+               fprintf(stderr, "Error running command (invalid): \"%s\"\n", inputs[j]);
+               close(fdout);
+               close(fderr);
+
+               exit(2);
+               
+            }
+            
+            else if(pid > 0) { // parent
+               // add to hash table
+               struct nlist *node = insert(inputs[j], pid, j); // insert command into hashtable
+               clock_gettime(CLOCK_MONOTONIC, &node->startTime);
+               
+            }
         }
 
         close(fdout);
