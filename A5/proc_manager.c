@@ -163,10 +163,6 @@ int main(int argc, char * argv[]) {
             dup2(fdout, 1);
             dup2(fderr, 2);
 
-            //set timer
-            struct nlist *node = insert(inputs[j], getpid(), j); // insert cmd into hashtable
-            clock_gettime(CLOCK_MONOTONIC, &node->startTime);
-
             // Write logs & Execute
             fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", j + 1, getpid(), getppid());
 
@@ -180,6 +176,10 @@ int main(int argc, char * argv[]) {
 
             exit(2);
         }
+
+        //set timer, add proc to table
+        struct nlist *node = insert(inputs[j], pid, j); // insert cmd into hashtable
+        clock_gettime(CLOCK_MONOTONIC, &node->startTime);
     }
 
     int status;
@@ -199,16 +199,21 @@ int main(int argc, char * argv[]) {
         // Calculate duration of node using stored values
         struct nlist *node = lookup(pid);
         clock_gettime(CLOCK_MONOTONIC, &node->endTime);
-        double duration = (node->endTime.tv_nsec - node->startTime.tv_nsec);
+        double duration = (node->endTime.tv_sec - node->startTime.tv_sec);
 
         fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
-        fprintf(stdout, "Finished at %ld, runtime duration %f\n", node->endTime.tv_nsec, duration);
+        fprintf(stdout, "Finished at %ld, runtime duration %f\n", node->endTime.tv_sec, duration);
 
         // Final print statements to .err file
         if (WIFSIGNALED(status)) { // if killed forcefully by signal
             fprintf(stderr, "Killed with signal %d\n", WTERMSIG(status));
         } else if (WIFEXITED(status)) { // else if exited normally
             fprintf(stderr, "Exited with exitcode = %d\n", WEXITSTATUS(status));
+        }
+
+        if(duration > 2) //if duration > 2, restart process
+        {
+            //TODO: re-execute process thru forking
         }
 
         close(fdout);
