@@ -201,7 +201,7 @@ int main(int argc, char * argv[]) {
         struct nlist *node = lookup(pid);
         clock_gettime(CLOCK_MONOTONIC, &node->endTime);
         double duration = (node->endTime.tv_sec - node->startTime.tv_sec);
-
+        duration += (node->endTime.tv_nsec - node->startTime.tv_nsec) / 1000000000.0;
         //fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
         //fprintf(stdout, "Finished at %ld, runtime duration %f\n", node->endTime.tv_sec, duration);
 
@@ -223,9 +223,6 @@ int main(int argc, char * argv[]) {
 
         if(duration > 2) //if duration > 2, restart process
         {
-            
-            //get the start time
-
             char * temp = strdup(node->command); // temp string so that inputs[j] is not affected
 
             //fork child
