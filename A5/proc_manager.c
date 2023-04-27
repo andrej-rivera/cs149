@@ -10,6 +10,7 @@
 #include<sys/types.h>
 #include<sys/wait.h>
 #include <time.h>
+#include  <errno.h>
 
 
 // HASH TABLE STUFF
@@ -136,9 +137,9 @@ int main(int argc, char * argv[]) {
     printf("\n");
 
     pid_t pid;
-
+    int j;
     // Loop to run commands
-    for (int j = 0; j < i; ++j) {
+    for (j = 0; j < i; ++j) {
         if ((pid = fork()) < 0) { // if error forking
             //err_sys("fork error");
             fprintf(stderr, "Fork Failed\n");
@@ -224,11 +225,11 @@ int main(int argc, char * argv[]) {
         {
             
             //get the start time
-            clock_gettime(CLOCK_MONOTONIC, &node->startTime);
-            
+
+            char * temp = strdup(node->command); // temp string so that inputs[j] is not affected
+
             //fork child
             pid = fork();
-            int argIndex = 0;
             //if error forking
             if(pid < 0){
                fprintf(stderr, "Fork Failed\n");
@@ -236,16 +237,7 @@ int main(int argc, char * argv[]) {
             }
             
             else if(pid == 0) {//child process
-               // Grab command & arg
-               char * args[30];
-               //char * temp = node->command; // temp string so that inputs[j] is not affected
-
-               args[0] = strtok(buf, " ");
                
-               while ((args[argIndex] = strtok(NULL, " ")) != NULL) {
-                   argIndex++;
-               }
-
                // Create output files & set new stdout, stderr
                char filename[30];
                sprintf(filename, "%d", getpid());
@@ -255,6 +247,16 @@ int main(int argc, char * argv[]) {
                dup2(fdout, 1);
                dup2(fderr, 2);
                
+               // Grab command & arg
+               char * args[30];
+
+               args[0] = strtok(temp, " ");
+               int argIndex = 1;
+
+               while ((args[argIndex] = strtok(NULL, " ")) != NULL) {
+                   argIndex++;
+               }
+
                //write restarting to files
                fprintf(stdout, "RESTARTING\n");
                fprintf(stderr, "RESTARTING\n");
@@ -263,10 +265,12 @@ int main(int argc, char * argv[]) {
                fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", node->index + 1, getpid(), getppid());
 
 
+
                execvp(args[0], args);
 
                // this part runs if an error is encountered
-               fprintf(stderr, "Error running command (invalid): \"%s\"\n", buf);
+               perror("execvp\n");
+               fprintf(stderr, "Error running command (invalid): \"%s\"\n", temp);
                close(fdout);
                close(fderr);
 
@@ -276,7 +280,7 @@ int main(int argc, char * argv[]) {
             
             else if(pid > 0) { // parent
                // add to hash table
-               struct nlist *node = insert(buf, pid, argIndex); // insert command into hashtable
+               struct nlist *node = insert(temp, pid, ++j); // insert command into hashtable
                clock_gettime(CLOCK_MONOTONIC, &node->startTime);
                
             }
