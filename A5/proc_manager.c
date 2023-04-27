@@ -208,7 +208,7 @@ int main(int argc, char * argv[]) {
         if(duration > 2) //if duration > 2, restart process
         {
             char * temp = strdup(node->command); // temp string so that node->command is not affected
-
+            int index = node->index;
             //fork child
             pid = fork();
             //if error forking
@@ -259,7 +259,7 @@ int main(int argc, char * argv[]) {
             
             else if(pid > 0) { // parent
                // add to hash table
-               struct nlist *node = insert(temp, pid, ++j); // insert command into hashtable
+               struct nlist *node = insert(temp, pid, index); // insert command into hashtable
                clock_gettime(CLOCK_MONOTONIC, &node->startTime); //record start time
                
             }
