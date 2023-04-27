@@ -201,26 +201,34 @@ int main(int argc, char * argv[]) {
         clock_gettime(CLOCK_MONOTONIC, &node->endTime);
         double duration = (node->endTime.tv_sec - node->startTime.tv_sec);
 
-        fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
-        fprintf(stdout, "Finished at %ld, runtime duration %f\n", node->endTime.tv_sec, duration);
+        //fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
+        //fprintf(stdout, "Finished at %ld, runtime duration %f\n", node->endTime.tv_sec, duration);
 
         // Final print statements to .err file
         if (WIFSIGNALED(status)) { // if killed forcefully by signal
             fprintf(stderr, "Killed with signal %d\n", WTERMSIG(status));
+            if(duration <= 2) {
+                fprintf(stderr, "spawning too fast\n");
+            }
         } else if (WIFEXITED(status)) { // else if exited normally
             fprintf(stderr, "Exited with exitcode = %d\n", WEXITSTATUS(status));
+            if(duration <= 2) {
+                fprintf(stderr, "spawning too fast\n");
+            }
         }
+        
+        fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
+        fprintf(stdout, "Finished at %ld, runtime duration %f\n", node->endTime.tv_sec, duration);
 
         if(duration > 2) //if duration > 2, restart process
         {
-            //TODO: re-execute process thru forking
             
             //get the start time
             clock_gettime(CLOCK_MONOTONIC, &node->startTime);
             
             //fork child
             pid = fork();
-            int argIndex = 1;
+            int argIndex = 0;
             //if error forking
             if(pid < 0){
                fprintf(stderr, "Fork Failed\n");
@@ -252,7 +260,7 @@ int main(int argc, char * argv[]) {
                fprintf(stderr, "RESTARTING\n");
 
                // Write logs & Execute
-               fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", argIndex, getpid(), getppid());
+               fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", node->index + 1, getpid(), getppid());
 
 
                execvp(args[0], args);
