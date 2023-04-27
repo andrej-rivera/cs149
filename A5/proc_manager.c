@@ -91,17 +91,8 @@ struct nlist *insert(char *command, pid_t pid, int index) //DONE-ish? (possibly 
 
         np->next = hashtab[hashval];
         hashtab[hashval] = np;
-    }
-
-    /* case 2: the pid is already there in the
-    hashslot, i.e. lookup found the pid. In this case you can either
-    do nothing, or you may want to set again the command and index
-    (depends on your implementation). */
-    else
-    {
     } 
 
-    // free((void *) np->defn); /*free previous defn */
     return np;
 }
 
@@ -149,6 +140,7 @@ int main(int argc, char * argv[]) {
             char * args[30];
             char * temp = strdup(inputs[j]); // temp string so that inputs[j] is not affected
 
+	    
             args[0] = strtok(temp, " ");
             int argIndex = 1;
             while ((args[argIndex] = strtok(NULL, " ")) != NULL) {
@@ -180,7 +172,7 @@ int main(int argc, char * argv[]) {
 
         //set timer, add proc to table
         struct nlist *node = insert(inputs[j], pid, j); // insert cmd into hashtable
-        clock_gettime(CLOCK_MONOTONIC, &node->startTime);
+        clock_gettime(CLOCK_MONOTONIC, &node->startTime); // record the start time
     }
 
     int status;
@@ -196,34 +188,34 @@ int main(int argc, char * argv[]) {
         int fderr = open(strcat(filename, ".err"), O_RDWR | O_CREAT | O_APPEND, 0777);
         dup2(fdout, 1);
         dup2(fderr, 2);
-
+        
+        struct nlist *node = lookup(pid); // lookup node
+        clock_gettime(CLOCK_MONOTONIC, &node->endTime); // record end time
+        
         // Calculate duration of node using stored values
-        struct nlist *node = lookup(pid);
-        clock_gettime(CLOCK_MONOTONIC, &node->endTime);
         double duration = (node->endTime.tv_sec - node->startTime.tv_sec);
         duration += (node->endTime.tv_nsec - node->startTime.tv_nsec) / 1000000000.0;
-        //fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
-        //fprintf(stdout, "Finished at %ld, runtime duration %f\n", node->endTime.tv_sec, duration);
-
+        
         // Final print statements to .err file
         if (WIFSIGNALED(status)) { // if killed forcefully by signal
             fprintf(stderr, "Killed with signal %d\n", WTERMSIG(status));
-            if(duration <= 2) {
+            if(duration <= 2) { // proc_manager will not restart process
                 fprintf(stderr, "spawning too fast\n");
             }
         } else if (WIFEXITED(status)) { // else if exited normally
             fprintf(stderr, "Exited with exitcode = %d\n", WEXITSTATUS(status));
-            if(duration <= 2) {
+            if(duration <= 2) { // proc_manager will not restart process
                 fprintf(stderr, "spawning too fast\n");
             }
         }
         
+        //printing to stdout files
         fprintf(stdout, "Finished child %d pid of parent %d\n", pid, getpid());
         fprintf(stdout, "Finished at %ld, runtime duration %f\n", node->endTime.tv_sec, duration);
 
         if(duration > 2) //if duration > 2, restart process
         {
-            char * temp = strdup(node->command); // temp string so that inputs[j] is not affected
+            char * temp = strdup(node->command); // temp string so that node->command is not affected
 
             //fork child
             pid = fork();
@@ -254,14 +246,12 @@ int main(int argc, char * argv[]) {
                    argIndex++;
                }
 
-               //write restarting to files
+               //write restarting to stdout and stderr files
                fprintf(stdout, "RESTARTING\n");
                fprintf(stderr, "RESTARTING\n");
 
                // Write logs & Execute
                fprintf(stdout, "Starting command %d: child %d pid of parent %d\n", node->index + 1, getpid(), getppid());
-
-
 
                execvp(args[0], args);
 
@@ -278,7 +268,7 @@ int main(int argc, char * argv[]) {
             else if(pid > 0) { // parent
                // add to hash table
                struct nlist *node = insert(temp, pid, ++j); // insert command into hashtable
-               clock_gettime(CLOCK_MONOTONIC, &node->startTime);
+               clock_gettime(CLOCK_MONOTONIC, &node->startTime); //record start time
                
             }
         }
