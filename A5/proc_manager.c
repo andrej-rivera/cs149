@@ -1,4 +1,11 @@
-/*
+/**
+ * Assignment 5 - proc manager
+ * Description: This program executes multiple commands with a timer by keeping track of their duration, and restarts processes
+ * that take too long, and stores processes in a hash table.
+ * Author name: Andre Rivera, Tanisha Damle
+ * Author email: andre.rivera@sjsu.edu; tanisha.damle@sjsu.edu
+ * Last modified date: March 24, 2023
+ * Creation date: March 21, 2023
  - https://linux.die.net/man/3/clock_gettime
 */
 #include <stdio.h>
