@@ -1,0 +1,63 @@
+ 1041  rsync -arv filedir/ filedir1/
+ 1042  cp -r filedir/ filedir2/
+ //With these two commands, I notice that the files in filedir1 were created on March 19, 2014 while files in filedir2 were created today (May 1, 2023).
+  
+ 1043  ls -latr filedir/
+ 1044  ls -latr filedir1/
+ 1045  ls -latr filedir2/
+ 1046  cd filedir1
+ 1047  ln access.c
+ 1048  ln access.c access_hardlink
+ 1049  cat access.c
+ 1050  cat access_hardlink
+ 1051  rm access_hardlink //remove link
+ 1052  cat access_hardlink
+ 1053  echo testing > test.txt 
+ 1054  ln -s test.txt test_symlink.txt
+ 1055  ln -s . directory_symlink
+ 1056  cat test.txt
+ 1057  echo changed > test.txt //changes in original file affect hardlink & symlink
+ 1058  cat test_symlink.txt
+ 1059  cd directory_symlink
+ 1060  ls
+ 1061  cd ..
+ 1062  rm directory_symlink
+ 1063  rm test_symlink
+ 1064  rm test_symlink.txt
+ 1065  ln -s . directory_symlink //I can create a symlink for a directory
+ 1066  ln -s . directory_hardlink
+ 1067  ls -i directory*
+ 1068  ln . directory_hardlink //This doesn't work, can't create hardlinks for directories
+ 1069  ln -s test.txt test_symlink
+ 1070  ln test.txt test_hardlink
+ 1071  ls -i test*
+ 1072  fsync test.txt
+ 1073  rsync
+ 1074  rsync test.txt
+ 1075  cp test.txt test1.txt //copy a file
+ 1076  rsync test.txt test2.txt //resync a file
+ 1077  ls -latr test*
+ 1078  ls -latr -i test* //similar results to earlier
+ 1079  find . -name test1.txt
+ 1080  find . -name *.txt
+ 1081  find . -type txt
+ 1082  find . -type "txt"
+ 1083  find "/home/desktop/CS 149" -name "*.txt"
+ 1084  find "/home/Desktop/CS 149" -name "*.txt"
+ 1085  find "/home/andre/Desktop/CS 149" -name "*.txt"
+ 1086  find "/home/andre/Desktop/CS 149/A2" -name "*.txt" //returns a list of all txt files
+ 1087  locate "/home/andre/Desktop/CS 149/A2" -name "*.txt"
+ 1088  stat .
+ 1089  stat test.txt //returns 2 links
+ 1090  ln -s test.txt test_symlink2.txt
+ 1091  stat test.txt //returns 2 links
+ 1092  ln test.txt test_hardlink2.txt
+ 1093  stat test.txt //returns 3 links
+ 1094  cd ..
+ 1095  locate test.txt //locates all test.txt files
+ 1096  sudo apt install plocate
+ 1097  locate test.txt
+ 1098  clear
+ 1099  cd ..
+ 1100  cd WS13
+ 1101  history > worksheet13.log
