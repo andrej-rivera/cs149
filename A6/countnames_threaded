@@ -67,8 +67,48 @@ struct NAME_NODE
   THREAD_NAME name_count;
   struct NAME_NODE *next;
 };
+typedef struct NAME_NODE NAME_NODE;
+NAME_NODE *head = NULL;
 
+//find a command based on the pid
+NAME_NODE *find(char *name)
+{
+  NAME_NODE *tmpNext = head;
+  
+  //traverse through list
+  while (tmpNext != NULL)
+  {
+      if (strcmp(tmpNext->name_count.name, name) == 0)
+      {
+          return tmpNext;
+      }
+      tmpNext = tmpNext->next;
+  }
+  return NULL;
+}
 
+//add a node given a name
+void addNode(char *name)
+{
+    NAME_NODE *node = find(name);
+    if(node == NULL) // if node isn't found, create it & insert it
+    {
+        node = (NAME_NODE *)malloc(sizeof(NAME_NODE));
+        if(node == NULL) // check if malloc worked
+            return;
+
+        //insert node into list & assign values
+        NAME_NODE *temp = head;
+        head = node;
+        node->next = temp;
+        strcpy(node->name_count.name, name);
+        node->name_count.count = 1;
+    }
+    else // otherwise, increment the count by one
+    {
+        node->name_count.count++;
+    }
+}
 
 /*********************************************************
 // function main 
