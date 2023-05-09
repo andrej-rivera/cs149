@@ -3,6 +3,7 @@
 #include <string.h>
 #include <pthread.h>
 #include <stdbool.h>
+#include<unistd.h>
 
 /*****************************************
 //CS149 SP23
@@ -110,6 +111,35 @@ void addNode(char *name)
     }
 }
 
+void logprint(char* message) {
+   
+   int hours;
+   int minutes; 
+   int seconds;
+   int day;
+   int nonth;
+   int year;
+   
+   time_t timeNow;
+   time(&timeNow);
+   
+   struct tm* local = localtime(&timeNow);
+   hour = local->tm_hour;			//hours since midnight (0-23)
+   min = local->tm_min;				//mins passed after the hour (0-59)
+   sec = local->tm_sec;				//secs passed after min (0-59)
+   day = local->tm_mday;			//day of the month (1-31)
+   month = local->tm_mon+1;			//month of year (0-11)
+   year = local->tm_year + 1900;		//year since 1900
+   
+   pthread_mutex_lock(&lock1);
+   if(hours < 12) {
+      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d am %s\n", ++logindex, pthread_self(), getpid(), day, month, year, hour, min, sec);
+   } else {
+      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d am %s\n", ++logindex, pthread_self(), getpid(), day, month, year, hour-12, min, sec);
+   }
+   pthread_mutex_unlock(&lock1);
+}
+
 /*********************************************************
 // function main 
 *********************************************************/
@@ -169,13 +199,26 @@ void* thread_runner(void* x)
    * when it opens a file to print a log message (e.g. logindex could also index argv)....
    * //Make sure to use any mutex locks appropriately
    */
-
+   char* file = (char*) x;
+   FILE* names = fopen(file, "r");
 
 
   // TODO use mutex to make this a start of a critical section 
   // critical section starts
   if (p!=NULL && p->creator==me) {
     printf("This is thread %ld and I delete THREADDATA",me);
+    
+    //creating the linked list
+    char input[100];
+    while((input = fgets(names_counts, 100, names)) != NULL) {
+       
+       pthread_mutex_lock(&tlock3); 
+       
+       
+       pthread_mutex_unlock(&tlock2);
+       
+    }
+    
   /**
    * TODO Free the THREADATA object.
    * Freeing should be done by the same thread that created it.
