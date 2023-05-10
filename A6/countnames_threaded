@@ -208,22 +208,26 @@ void* thread_runner(void* x)
   if (p!=NULL && p->creator==me) {
     printf("This is thread %ld and I delete THREADDATA",me);
     
-    //creating the linked list
+    //thread to read from file and create the linked list
     char input[100];
     while((input = fgets(names_counts, 100, names)) != NULL) {
        
        pthread_mutex_lock(&tlock3); 
-       
-       
-       pthread_mutex_unlock(&tlock2);
+       addNode(input);
+       logprint();
+       pthread_mutex_unlock(&tlock3);
        
     }
+    
+    //
     
   /**
    * TODO Free the THREADATA object.
    * Freeing should be done by the same thread that created it.
    * See how the THREADDATA was created for an example of how this is done.
    */
+   free(p);
+   p = NULL;
   } else {
     printf("This is thread %ld and I can access the THREADDATA",me);
   }
