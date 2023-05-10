@@ -212,6 +212,10 @@ void* thread_runner(void* x)
     char input[100];
     while((input = fgets(names_counts, 100, names)) != NULL) {
        
+       if (buf[strlen(buf) - 1] == '\n') {
+         buf[strlen(buf) - 1] = '\0'; /* replace newline with null */
+       }
+       
        pthread_mutex_lock(&tlock3); 
        addNode(input);
        logprint();
