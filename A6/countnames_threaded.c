@@ -6,7 +6,8 @@
  * Last modified date: May 10, 2023
  * Creation date: May 8, 2023
  - https://sjsu.instructure.com/courses/1560213/files/folder/code/a6?preview=72952745
- - 
+ - https://www.techiedelight.com/print-current-date-and-time-in-c/
+ - https://man7.org/linux/man-pages/man3/pthread_create.3.html
 */
 // 
 
