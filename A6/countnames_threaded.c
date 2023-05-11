@@ -91,6 +91,7 @@ NAME_NODE *find(char *name)
 //add a node given a name
 void addNode(char *name)
 {
+    pthread_mutex_lock(&tlock3);
     NAME_NODE *node = find(name);
     if(node == NULL) // if node isn't found, create it & insert it
     {
@@ -107,8 +108,11 @@ void addNode(char *name)
     }
     else // otherwise, increment the count by one
     {
+        pthread_mutex_lock(&tlock3);
         node->name_count.count++;
+        pthread_mutex_lock(&tlock3);
     }
+    pthread_mutex_unlock(&tlock1);
 }
 
 void logprint(char* message) {
@@ -133,9 +137,9 @@ void logprint(char* message) {
    
    pthread_mutex_lock(&tlock1);
    if(hour < 12) {
-      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d am: %s\n", ++logindex, pthread_self(), getpid(), day, month, year, hour, min, sec, message);
+      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d pm: %s\n", ++logindex, pthread_self(), getpid(), day, month, year, hour, min, sec, message);
    } else {
-      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d pm: %s\n", ++logindex, pthread_self(), getpid(), day, month, year, hour-12, min, sec, message);
+      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d am: %s\n", ++logindex, pthread_self(), getpid(), day, month, year, hour-12, min, sec, message);
    }
    pthread_mutex_unlock(&tlock1);
 }
@@ -202,11 +206,12 @@ void* thread_runner(void* x)
    char* file = (char*) x;
    FILE* names = fopen(file, "r");
    char buf[100];
-   logprint(buf);
+   char* input = NULL;
+   logprint(input);
    
    //thread to read from file and create the linked list
     pthread_mutex_lock(&tlock3);
-    char* input = NULL;
+    
     
     int count = 0; 
     while(fgets(input, 100, names) != NULL) {
@@ -227,6 +232,7 @@ void* thread_runner(void* x)
 
   // TODO use mutex to make this a start of a critical section 
   // critical section starts
+  pthread_mutex_lock(&tlock2); // critical section starts
   if (p!=NULL && p->creator==me) {
     printf("This is thread %ld and I delete THREADDATA", me);
     
@@ -238,7 +244,7 @@ void* thread_runner(void* x)
    * Freeing should be done by the same thread that created it.
    * See how the THREADDATA was created for an example of how this is done.
    */
-   logprint(buf);
+   logprint(input);
    free(p);
    p = NULL;
    
@@ -246,6 +252,7 @@ void* thread_runner(void* x)
     printf("This is thread %ld and I can access the THREADDATA",me);
   }
   // TODO critical section ends
+  pthread_mutex_unlock(&tlock2); // critical section ends
 
   pthread_exit(NULL);
   //return NULL;
