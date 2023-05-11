@@ -152,19 +152,19 @@ int main(int argc, char *argv[])
 {
   //TODO similar interface as A2: give as command-line arguments three filenames of numbers (the numbers in the files are newline-separated).
 
-  printf("create first thread");
+  printf("create first thread\n");
   pthread_create(&tid1,NULL,thread_runner,argv[1]);
   
-  printf("create second thread");
+  printf("create second thread\n");
   pthread_create(&tid2,NULL,thread_runner,argv[2]);
   
-  printf("wait for first thread to exit");
+  printf("wait for first thread to exit\n");
   pthread_join(tid1,NULL);
-  printf("first thread exited");
+  printf("first thread exited\n");
 
-  printf("wait for second thread to exit");
+  printf("wait for second thread to exit\n");
   pthread_join(tid2,NULL);
-  printf("second thread exited");
+  printf("second thread exited\n");
 
   //TODO print out the sum variable with the sum of all the numbers
   
@@ -200,9 +200,9 @@ void* thread_runner(void* x)
   pthread_mutex_unlock(&tlock2);  // critical section ends
 
   if (p!=NULL && p->creator==me) {
-    printf("This is thread %ld and I created THREADDATA %p",me,p);
+    printf("This is thread %ld and I created THREADDATA %p\n",me,p);
   } else {
-    printf("This is thread %ld and I can access the THREADDATA %p",me,p);
+    printf("This is thread %ld and I can access the THREADDATA %p\n",me,p);
   }
 
 
@@ -215,8 +215,7 @@ void* thread_runner(void* x)
    */
    char* file = (char*) x;
    FILE* names = fopen(file, "r");
-   char buf[100];
-   char* input = NULL;
+   char input[30];
    logprint(input);
    
    //thread to read from file and create the linked list
@@ -224,7 +223,7 @@ void* thread_runner(void* x)
     
     
     int count = 0; 
-    while(fgets(input, 100, names) != NULL) {
+    while(fgets(input, 30, names) != NULL) {
        count++;
        
        //char* in = NULL;
