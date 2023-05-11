@@ -72,10 +72,10 @@ typedef struct NAME_NODE NAME_NODE;
 NAME_NODE *head = NULL;
 
 //find a command based on the pid
-NAME_NODE *find(char *name)
+NAME_NODE *find(char *name, NAME_NODE *start)
 {
    
-  NAME_NODE *tmpNext = head;
+  NAME_NODE *tmpNext = start;
   
   //traverse through list
   while (tmpNext != NULL)
@@ -93,7 +93,7 @@ NAME_NODE *find(char *name)
 void addNode(char *name)
 {
     pthread_mutex_lock(&tlock3);
-    NAME_NODE *node = find(name);
+    NAME_NODE *node = find(name, head);
     if(node == NULL) // if node isn't found, create it & insert it
     {
         node = (NAME_NODE *)malloc(sizeof(NAME_NODE));
@@ -109,9 +109,9 @@ void addNode(char *name)
     }
     else // otherwise, increment the count by one
     {
-        pthread_mutex_lock(&tlock3);
+        //pthread_mutex_lock(&tlock3);
         node->name_count.count++;
-        pthread_mutex_unlock(&tlock3);
+        //pthread_mutex_unlock(&tlock3);
     }
     pthread_mutex_unlock(&tlock3);
 }
@@ -171,6 +171,7 @@ int main(int argc, char *argv[])
   //free(inputs);
    NAME_NODE* current = head;
    while (current != NULL) {
+      printf("%s: %d\n", current->name_count.name, current ->name_count.count);
       NAME_NODE* temp = current;
       current = current->next;
       //free(temp->line);
@@ -190,7 +191,7 @@ void* thread_runner(void* x)
   pthread_t me;
 
   me = pthread_self();
-  printf("This is thread %ld (p=%p)",me,p);
+  printf("This is thread %ld (p=%p)\n",me,p);
   
   pthread_mutex_lock(&tlock2); // critical section starts
   if (p==NULL) {
@@ -219,7 +220,7 @@ void* thread_runner(void* x)
    logprint(input);
    
    //thread to read from file and create the linked list
-    pthread_mutex_lock(&tlock3);
+    //pthread_mutex_lock(&tlock3);
     
     
     int count = 0; 
@@ -237,13 +238,13 @@ void* thread_runner(void* x)
     }
     fclose(names);
     //logprint(file);
-    pthread_mutex_unlock(&tlock3);
+    //pthread_mutex_unlock(&tlock3);
 
   // TODO use mutex to make this a start of a critical section 
   // critical section starts
   pthread_mutex_lock(&tlock2); // critical section starts
   if (p!=NULL && p->creator==me) {
-    printf("This is thread %ld and I delete THREADDATA", me);
+    printf("This is thread %ld and I delete THREADDATA\n", me);
     
     
     //
@@ -259,7 +260,7 @@ void* thread_runner(void* x)
    p = NULL;
    
   } else {
-    printf("This is thread %ld and I can access the THREADDATA",me);
+    printf("This is thread %ld and I can access the THREADDATA\n",me);
   }
   // TODO critical section ends
   pthread_mutex_unlock(&tlock2); // critical section ends
