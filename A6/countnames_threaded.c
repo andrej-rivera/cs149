@@ -152,19 +152,19 @@ int main(int argc, char *argv[])
 {
   //TODO similar interface as A2: give as command-line arguments three filenames of numbers (the numbers in the files are newline-separated).
   printf("=============================== Log Messages ===============================\n");
-  printf("create first thread\n");
+  printf("Create first thread\n");
   pthread_create(&tid1,NULL,thread_runner,argv[1]);
   
-  printf("create second thread\n");
+  printf("Create second thread\n");
   pthread_create(&tid2,NULL,thread_runner,argv[2]);
   
-  printf("wait for first thread to exit\n");
+  printf("Wait for first thread to exit\n");
   pthread_join(tid1,NULL);
-  printf("first thread exited\n");
+  printf("First thread exited\n");
 
-  printf("wait for second thread to exit\n");
+  printf("Wait for second thread to exit\n");
   pthread_join(tid2,NULL);
-  printf("second thread exited\n");
+  printf("Second thread exited\n");
 
   //TODO print out the sum variable with the sum of all the numbers
   
@@ -191,9 +191,9 @@ void* thread_runner(void* x)
   pthread_t me;
 
   me = pthread_self();
-  printf("This is thread %ld (p=%p)\n",me,p);
   
   pthread_mutex_lock(&tlock2); // critical section starts
+  logprint(" ");  
   if (p==NULL) {
     p = (THREADDATA*) malloc(sizeof(THREADDATA));
     p->creator=me;
@@ -217,7 +217,8 @@ void* thread_runner(void* x)
    char* file = (char*) x;
    FILE* names = fopen(file, "r");
    char input[30];
-   logprint(input);
+   logprint("opened file ");
+   printf("%s\n", file);
    
    //thread to read from file and create the linked list
     //pthread_mutex_lock(&tlock3);
@@ -247,12 +248,11 @@ void* thread_runner(void* x)
    // TODO use mutex to make this a start of a critical section
    // critical section starts
    pthread_mutex_lock(&tlock2); // critical section starts
+   
+   logprint(" ");
    if (p != NULL && p->creator == me)
    {
     printf("This is thread %ld and I delete THREADDATA\n", me);
-    
-    
-    //
     
   /**
    * TODO Free the THREADATA object.
@@ -260,7 +260,6 @@ void* thread_runner(void* x)
    * See how the THREADDATA was created for an example of how this is done.
    */
    
-   logprint(input);
    free(p);
    p = NULL;
    
