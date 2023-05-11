@@ -74,6 +74,7 @@ NAME_NODE *head = NULL;
 //find a command based on the pid
 NAME_NODE *find(char *name)
 {
+   
   NAME_NODE *tmpNext = head;
   
   //traverse through list
@@ -110,9 +111,9 @@ void addNode(char *name)
     {
         pthread_mutex_lock(&tlock3);
         node->name_count.count++;
-        pthread_mutex_lock(&tlock3);
+        pthread_mutex_unlock(&tlock3);
     }
-    pthread_mutex_unlock(&tlock1);
+    pthread_mutex_unlock(&tlock3);
 }
 
 void logprint(char* message) {
@@ -166,6 +167,15 @@ int main(int argc, char *argv[])
   printf("second thread exited");
 
   //TODO print out the sum variable with the sum of all the numbers
+  
+  //free(inputs);
+   NAME_NODE* current = head;
+   while (current != NULL) {
+      NAME_NODE* temp = current;
+      current = current->next;
+      //free(temp->line);
+      free(temp);
+   }
 
   exit(0);
 
@@ -244,6 +254,7 @@ void* thread_runner(void* x)
    * Freeing should be done by the same thread that created it.
    * See how the THREADDATA was created for an example of how this is done.
    */
+   
    logprint(input);
    free(p);
    p = NULL;
