@@ -241,6 +241,7 @@ void* thread_runner(void* x)
    logprint(buf);
    free(p);
    p = NULL;
+   
   } else {
     printf("This is thread %ld and I can access the THREADDATA",me);
   }
