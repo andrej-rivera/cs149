@@ -1,5 +1,5 @@
 /**
- * Assignment 5 - countnames threaded
+ * Assignment 6 - countnames threaded
  * Description: This program counts names to employ multi-threading with two threads.
  * Author name: Andre Rivera, Tanisha Damle
  * Author email: andre.rivera@sjsu.edu; tanisha.damle@sjsu.edu
@@ -147,6 +147,12 @@ void logprint(char *message)
 int main(int argc, char *argv[])
 {
   // TODO similar interface as A2: give as command-line arguments three filenames of numbers (the numbers in the files are newline-separated).
+  
+  if(argc != 2) {
+     fprintf(stderr, "Exactly two files are not provided.");
+     exit(2);
+  }
+  
   printf("=============================== Log Messages ===============================\n");
 
   // Create first thread & pass first file as arg
