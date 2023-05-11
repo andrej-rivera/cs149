@@ -143,15 +143,15 @@ void logprint(char* message) {
 /*********************************************************
 // function main 
 *********************************************************/
-int main()
+int main(int argc, char *argv[])
 {
   //TODO similar interface as A2: give as command-line arguments three filenames of numbers (the numbers in the files are newline-separated).
 
   printf("create first thread");
-  pthread_create(&tid1,NULL,thread_runner,NULL);
+  pthread_create(&tid1,NULL,thread_runner,argv[1]);
   
   printf("create second thread");
-  pthread_create(&tid2,NULL,thread_runner,NULL);
+  pthread_create(&tid2,NULL,thread_runner,argv[2]);
   
   printf("wait for first thread to exit");
   pthread_join(tid1,NULL);
@@ -201,27 +201,35 @@ void* thread_runner(void* x)
    */
    char* file = (char*) x;
    FILE* names = fopen(file, "r");
-
-
-  // TODO use mutex to make this a start of a critical section 
-  // critical section starts
-  if (p!=NULL && p->creator==me) {
-    printf("This is thread %ld and I delete THREADDATA",me);
+   char buf[100];
+   logprint(buf);
+   
+   //thread to read from file and create the linked list
+    pthread_mutex_lock(&tlock3);
+    char* input = NULL;
     
-    //thread to read from file and create the linked list
-    char input[100];
+    int count = 0; 
     while(fgets(input, 100, names) != NULL) {
+       count++;
+       
+       //char* in = NULL;
        
        if (input[strlen(input) - 1] == '\n') {
          input[strlen(input) - 1] = '\0'; /* replace newline with null */
        }
        
-       pthread_mutex_lock(&tlock3); 
-       addNode(input);
-       logprint(file);
-       pthread_mutex_unlock(&tlock3);
+        addNode(input);
        
     }
+    fclose(names);
+    //logprint(file);
+    pthread_mutex_unlock(&tlock3);
+
+  // TODO use mutex to make this a start of a critical section 
+  // critical section starts
+  if (p!=NULL && p->creator==me) {
+    printf("This is thread %ld and I delete THREADDATA", me);
+    
     
     //
     
@@ -230,6 +238,7 @@ void* thread_runner(void* x)
    * Freeing should be done by the same thread that created it.
    * See how the THREADDATA was created for an example of how this is done.
    */
+   logprint(buf);
    free(p);
    p = NULL;
   } else {
