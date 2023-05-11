@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
   // TODO similar interface as A2: give as command-line arguments three filenames of numbers (the numbers in the files are newline-separated).
   
   if(argc != 3) {
-     fprintf(stderr, "Exactly two files are not provided.");
+     fprintf(stderr, "Exactly two files are not provided.\n");
      exit(2);
   }
   
@@ -220,7 +220,7 @@ void *thread_runner(void *x)
   char *file = (char *)x;
   FILE *names = fopen(file, "r");
   if(names == NULL) {
-     printf("Error - cannot open file.");
+     fprintf(stderr, "Error - cannot open file %s\n", file);
      exit(2);
   }
   char input[30];
