@@ -1,4 +1,14 @@
-// https://sjsu.instructure.com/courses/1560213/files/folder/code/a6?preview=72952745
+/**
+ * Assignment 5 - countnames threaded
+ * Description: This program counts names to employ multi-threading with two threads.
+ * Author name: Andre Rivera, Tanisha Damle
+ * Author email: andre.rivera@sjsu.edu; tanisha.damle@sjsu.edu
+ * Last modified date: May 10, 2023
+ * Creation date: May 8, 2023
+ - https://sjsu.instructure.com/courses/1560213/files/folder/code/a6?preview=72952745
+ - 
+*/
+// 
 
 #include <stdio.h>
 #include <stdlib.h>
