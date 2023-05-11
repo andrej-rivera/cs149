@@ -4,7 +4,7 @@
 #include <pthread.h>
 #include <stdbool.h>
 #include<unistd.h>
-
+#include <ctype.h>
 /*****************************************
 //CS149 SP23
 //Template for assignment 6
@@ -138,9 +138,9 @@ void logprint(char* message) {
    
    pthread_mutex_lock(&tlock1);
    if(hour < 12) {
-      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d pm: %s\n", ++logindex, pthread_self(), getpid(), day, month, year, hour, min, sec, message);
+      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d pm: %s", ++logindex, pthread_self(), getpid(), day, month, year, hour, min, sec, message);
    } else {
-      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d am: %s\n", ++logindex, pthread_self(), getpid(), day, month, year, hour-12, min, sec, message);
+      fprintf(stdout, "Logindex %d, thread %ld, PID, %d, %02d/%02d/%d %02d:%02d:%02d am: %s", ++logindex, pthread_self(), getpid(), day, month, year, hour-12, min, sec, message);
    }
    pthread_mutex_unlock(&tlock1);
 }
@@ -151,7 +151,7 @@ void logprint(char* message) {
 int main(int argc, char *argv[])
 {
   //TODO similar interface as A2: give as command-line arguments three filenames of numbers (the numbers in the files are newline-separated).
-
+  printf("=============================== Log Messages ===============================\n");
   printf("create first thread\n");
   pthread_create(&tid1,NULL,thread_runner,argv[1]);
   
@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
 
   //TODO print out the sum variable with the sum of all the numbers
   
-  //free(inputs);
+  printf("\n=============================== Name Counts  ===============================\n");
    NAME_NODE* current = head;
    while (current != NULL) {
       printf("%s: %d\n", current->name_count.name, current ->name_count.count);
@@ -221,29 +221,34 @@ void* thread_runner(void* x)
    
    //thread to read from file and create the linked list
     //pthread_mutex_lock(&tlock3);
-    
-    
-    int count = 0; 
-    while(fgets(input, 30, names) != NULL) {
-       count++;
-       
-       //char* in = NULL;
-       
-       if (input[strlen(input) - 1] == '\n') {
-         input[strlen(input) - 1] = '\0'; /* replace newline with null */
-       }
-       
-        addNode(input);
-       
-    }
-    fclose(names);
-    //logprint(file);
-    //pthread_mutex_unlock(&tlock3);
 
-  // TODO use mutex to make this a start of a critical section 
-  // critical section starts
-  pthread_mutex_lock(&tlock2); // critical section starts
-  if (p!=NULL && p->creator==me) {
+   int count = 0;
+   while (fgets(input, 30, names) != NULL)
+   {
+      count++;
+
+      if(isspace(input[0])) // if whitespace, print to stderror
+      {
+        fprintf(stderr, "Warning - file %s line %d is empty\n", file, count);
+        continue;
+      }
+
+      if (input[strlen(input) - 1] == '\n')
+      {
+        input[strlen(input) - 1] = '\0'; /* replace newline with null */
+      }
+
+      addNode(input);
+   }
+   fclose(names);
+   // logprint(file);
+   // pthread_mutex_unlock(&tlock3);
+
+   // TODO use mutex to make this a start of a critical section
+   // critical section starts
+   pthread_mutex_lock(&tlock2); // critical section starts
+   if (p != NULL && p->creator == me)
+   {
     printf("This is thread %ld and I delete THREADDATA\n", me);
     
     
